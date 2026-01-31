@@ -160,7 +160,7 @@ export default function HomeScreen() {
 
             <TouchableOpacity
               style={styles.secondaryButton}
-              onPress={() => router.push('/camera?gallery=true')}
+              onPress={() => router.push('/gallery')}
               activeOpacity={0.85}
             >
               <Ionicons name="images" size={26} color="#4CAF50" />

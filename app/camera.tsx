@@ -1,43 +1,34 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
+const MAX_IMAGE_WIDTH = 1024;
+const COMPRESSION_QUALITY = 0.6;
+
 export default function CameraScreen() {
   const router = useRouter();
-  const { gallery } = useLocalSearchParams<{ gallery?: string }>();
   const { t } = useTranslation();
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [isCapturing, setIsCapturing] = useState(false);
   const cameraRef = useRef<CameraView>(null);
 
-  useEffect(() => {
-    if (gallery === 'true') {
-      pickImage();
-    }
-  }, [gallery]);
-
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.8,
-      base64: true,
-    });
-
-    if (!result.canceled && result.assets[0].base64) {
-      router.replace({
-        pathname: '/results',
-        params: { imageBase64: result.assets[0].base64 },
-      });
-    } else {
-      router.back();
+  const compressImage = async (uri: string): Promise<string | null> => {
+    try {
+      const result = await ImageManipulator.manipulateAsync(
+        uri,
+        [{ resize: { width: MAX_IMAGE_WIDTH } }],
+        { compress: COMPRESSION_QUALITY, format: ImageManipulator.SaveFormat.JPEG, base64: true }
+      );
+      return result.base64 || null;
+    } catch (error) {
+      console.error('Failed to compress image:', error);
+      return null;
     }
   };
 
@@ -47,15 +38,19 @@ export default function CameraScreen() {
     setIsCapturing(true);
     try {
       const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.8,
-        base64: true,
+        quality: 1,
       });
 
-      if (photo?.base64) {
-        router.replace({
-          pathname: '/results',
-          params: { imageBase64: photo.base64 },
-        });
+      if (photo?.uri) {
+        const compressedBase64 = await compressImage(photo.uri);
+        if (compressedBase64) {
+          router.replace({
+            pathname: '/results',
+            params: { imageBase64: compressedBase64 },
+          });
+        } else {
+          setIsCapturing(false);
+        }
       }
     } catch (error) {
       console.error('Failed to take photo:', error);
@@ -92,14 +87,6 @@ export default function CameraScreen() {
     );
   }
 
-  if (gallery === 'true') {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4CAF50" />
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <CameraView
@@ -123,7 +110,7 @@ export default function CameraScreen() {
           </View>
 
           <View style={styles.bottomBar}>
-            <TouchableOpacity style={styles.galleryButton} onPress={pickImage}>
+            <TouchableOpacity style={styles.galleryButton} onPress={() => router.push('/gallery')}>
               <Ionicons name="images" size={28} color="#fff" />
             </TouchableOpacity>
 
