@@ -15,33 +15,97 @@ interface RecipeCardProps {
 const getRecipeImage = (recipeName: string): string => {
   const name = recipeName.toLowerCase();
 
-  // Map recipe types to Unsplash food images
-  if (name.includes('egg') || name.includes('jaj')) {
-    return 'https://images.unsplash.com/photo-1482049016gy-76a5e7b7b7b7?w=400&h=200&fit=crop';
+  // Eggs - EN, PL, UK, DE
+  if (name.includes('egg') || name.includes('jaj') || name.includes('яйц') || name.includes('яєч') || name.includes('eier') || name.includes('omlet') || name.includes('омлет') || name.includes('scrambl')) {
+    return 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&h=200&fit=crop';
   }
-  if (name.includes('pasta') || name.includes('spaghetti') || name.includes('makaron')) {
+  // Pasta - EN, PL, UK, DE
+  if (name.includes('pasta') || name.includes('spaghetti') || name.includes('makaron') || name.includes('паста') || name.includes('макарон') || name.includes('nudel') || name.includes('lasagn') || name.includes('лазань') || name.includes('carbonara') || name.includes('bolognese') || name.includes('penne') || name.includes('tagliatelle')) {
     return 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&h=200&fit=crop';
   }
-  if (name.includes('salad') || name.includes('sałat') || name.includes('salat')) {
+  // Salad - EN, PL, UK, DE
+  if (name.includes('salad') || name.includes('sałat') || name.includes('салат') || name.includes('salat')) {
     return 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=200&fit=crop';
   }
-  if (name.includes('soup') || name.includes('zup')) {
+  // Soup - EN, PL, UK, DE
+  if (name.includes('soup') || name.includes('zup') || name.includes('суп') || name.includes('борщ') || name.includes('borscht') || name.includes('suppe') || name.includes('rosół') || name.includes('broth') || name.includes('бульйон')) {
     return 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&h=200&fit=crop';
   }
-  if (name.includes('sandwich') || name.includes('kanapk')) {
+  // Sandwich/Toast - EN, PL, UK, DE
+  if (name.includes('sandwich') || name.includes('kanapk') || name.includes('бутерброд') || name.includes('сендвіч') || name.includes('toast') || name.includes('tost') || name.includes('гренк') || name.includes('belegtes')) {
     return 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&h=200&fit=crop';
   }
-  if (name.includes('cake') || name.includes('ciast') || name.includes('dessert') || name.includes('deser')) {
+  // Pizza
+  if (name.includes('pizza') || name.includes('піца') || name.includes('пицц')) {
+    return 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=200&fit=crop';
+  }
+  // Cake/Dessert - EN, PL, UK, DE
+  if (name.includes('cake') || name.includes('ciast') || name.includes('торт') || name.includes('kuchen') || name.includes('dessert') || name.includes('deser') || name.includes('десерт') || name.includes('nachtisch') || name.includes('sernik') || name.includes('cheesecake') || name.includes('чізкейк')) {
     return 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=200&fit=crop';
   }
-  if (name.includes('chicken') || name.includes('kurczak')) {
+  // Pancakes - EN, PL, UK, DE
+  if (name.includes('pancake') || name.includes('naleśnik') || name.includes('mlynci') || name.includes('млинц') || name.includes('pfannkuchen') || name.includes('crepe') || name.includes('racuch') || name.includes('оладк')) {
+    return 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=200&fit=crop';
+  }
+  // Chicken - EN, PL, UK, DE
+  if (name.includes('chicken') || name.includes('kurczak') || name.includes('kura') || name.includes('курк') || name.includes('курят') || name.includes('huhn') || name.includes('hähnchen') || name.includes('hühn')) {
     return 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=200&fit=crop';
   }
-  if (name.includes('potato') || name.includes('ziemniak') || name.includes('dumpling') || name.includes('kluski')) {
+  // Fish - EN, PL, UK, DE
+  if (name.includes('fish') || name.includes('ryb') || name.includes('риб') || name.includes('fisch') || name.includes('salmon') || name.includes('łosoś') || name.includes('лосось') || name.includes('lachs') || name.includes('tuna') || name.includes('tuńczyk') || name.includes('thunfisch')) {
+    return 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=200&fit=crop';
+  }
+  // Meat/Beef - EN, PL, UK, DE
+  if (name.includes('beef') || name.includes('wołowin') || name.includes('яловичин') || name.includes('rind') || name.includes('steak') || name.includes('stek') || name.includes('стейк') || name.includes('mięs') || name.includes("м'яс") || name.includes('fleisch') || name.includes('kotlet') || name.includes('schnitzel')) {
+    return 'https://images.unsplash.com/photo-1546833998-877b37c2e5c6?w=400&h=200&fit=crop';
+  }
+  // Pork - EN, PL, UK, DE
+  if (name.includes('pork') || name.includes('wieprz') || name.includes('свинин') || name.includes('schwein') || name.includes('schabowy') || name.includes('bacon') || name.includes('boczek') || name.includes('бекон') || name.includes('speck')) {
+    return 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=400&h=200&fit=crop';
+  }
+  // Potato/Dumplings - EN, PL, UK, DE
+  if (name.includes('potato') || name.includes('ziemniak') || name.includes('картопл') || name.includes('kartoffel') || name.includes('dumpling') || name.includes('kluski') || name.includes('vareniki') || name.includes('вареник') || name.includes('pierogi') || name.includes('пироги') || name.includes('knödel') || name.includes('pyzy') || name.includes('kopytk')) {
     return 'https://images.unsplash.com/photo-1596560548464-f010549b84d7?w=400&h=200&fit=crop';
   }
-  if (name.includes('plum') || name.includes('śliwk') || name.includes('fruit') || name.includes('owoc')) {
+  // Rice - EN, PL, UK, DE
+  if (name.includes('rice') || name.includes('ryż') || name.includes('рис') || name.includes('reis') || name.includes('risotto') || name.includes('ризото') || name.includes('pilaf') || name.includes('pilau') || name.includes('плов')) {
+    return 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400&h=200&fit=crop';
+  }
+  // Vegetables - EN, PL, UK, DE
+  if (name.includes('vegetable') || name.includes('warzyw') || name.includes('овоч') || name.includes('gemüse') || name.includes('vegan') || name.includes('veggie')) {
+    return 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&h=200&fit=crop';
+  }
+  // Smoothie/Drink - EN, PL, UK, DE
+  if (name.includes('smoothie') || name.includes('koktajl') || name.includes('смузі') || name.includes('shake') || name.includes('drink') || name.includes('getränk') || name.includes('napój') || name.includes('напій')) {
+    return 'https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=400&h=200&fit=crop';
+  }
+  // Bread - EN, PL, UK, DE
+  if (name.includes('bread') || name.includes('chleb') || name.includes('хліб') || name.includes('brot') || name.includes('bułk') || name.includes('булк') || name.includes('brötchen')) {
+    return 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=200&fit=crop';
+  }
+  // Fruit/Plum - EN, PL, UK, DE
+  if (name.includes('plum') || name.includes('śliwk') || name.includes('слив') || name.includes('pflaume') || name.includes('fruit') || name.includes('owoc') || name.includes('фрукт') || name.includes('obst') || name.includes('apple') || name.includes('jabłk') || name.includes('яблук') || name.includes('apfel')) {
     return 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400&h=200&fit=crop';
+  }
+  // Stir-fry/Wok - EN, PL, UK, DE
+  if (name.includes('stir') || name.includes('wok') || name.includes('asian') || name.includes('azjat') || name.includes('азіат') || name.includes('asiat') || name.includes('chiński') || name.includes('chinese') || name.includes('chines')) {
+    return 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=200&fit=crop';
+  }
+  // Burger - EN, PL, UK, DE
+  if (name.includes('burger') || name.includes('hamburger') || name.includes('бургер')) {
+    return 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=200&fit=crop';
+  }
+  // Wrap/Burrito/Taco
+  if (name.includes('wrap') || name.includes('burrito') || name.includes('taco') || name.includes('тако') || name.includes('tortilla') || name.includes('тортилья')) {
+    return 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400&h=200&fit=crop';
+  }
+  // Breakfast - EN, PL, UK, DE
+  if (name.includes('breakfast') || name.includes('śniadani') || name.includes('сніданок') || name.includes('frühstück')) {
+    return 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=400&h=200&fit=crop';
+  }
+  // Cheese - EN, PL, UK, DE
+  if (name.includes('cheese') || name.includes('ser ') || name.includes('serow') || name.includes('сир') || name.includes('käse') || name.includes('zapiekank')) {
+    return 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=200&fit=crop';
   }
 
   // Default food image
@@ -51,15 +115,52 @@ const getRecipeImage = (recipeName: string): string => {
 const getRecipeIcon = (recipeName: string): string => {
   const name = recipeName.toLowerCase();
 
-  if (name.includes('egg') || name.includes('jaj')) return 'egg-fried';
-  if (name.includes('pasta') || name.includes('makaron')) return 'pasta';
-  if (name.includes('salad') || name.includes('sałat')) return 'food-apple';
-  if (name.includes('soup') || name.includes('zup')) return 'bowl-mix';
-  if (name.includes('sandwich') || name.includes('kanapk')) return 'bread-slice';
-  if (name.includes('cake') || name.includes('ciast') || name.includes('dessert')) return 'cupcake';
-  if (name.includes('chicken') || name.includes('kurczak')) return 'food-drumstick';
-  if (name.includes('potato') || name.includes('dumpling') || name.includes('kluski')) return 'food';
-  if (name.includes('plum') || name.includes('fruit') || name.includes('caramel')) return 'fruit-cherries';
+  // Eggs
+  if (name.includes('egg') || name.includes('jaj') || name.includes('яйц') || name.includes('яєч') || name.includes('eier') || name.includes('omlet') || name.includes('омлет')) return 'egg-fried';
+  // Pasta
+  if (name.includes('pasta') || name.includes('makaron') || name.includes('паста') || name.includes('макарон') || name.includes('nudel') || name.includes('spaghetti') || name.includes('lasagn')) return 'pasta';
+  // Salad
+  if (name.includes('salad') || name.includes('sałat') || name.includes('салат') || name.includes('salat')) return 'food-apple';
+  // Soup
+  if (name.includes('soup') || name.includes('zup') || name.includes('суп') || name.includes('борщ') || name.includes('suppe') || name.includes('rosół') || name.includes('broth')) return 'bowl-mix';
+  // Sandwich
+  if (name.includes('sandwich') || name.includes('kanapk') || name.includes('бутерброд') || name.includes('сендвіч') || name.includes('toast') || name.includes('tost')) return 'bread-slice';
+  // Pizza
+  if (name.includes('pizza') || name.includes('піца') || name.includes('пицц')) return 'pizza';
+  // Cake/Dessert
+  if (name.includes('cake') || name.includes('ciast') || name.includes('торт') || name.includes('kuchen') || name.includes('dessert') || name.includes('deser') || name.includes('десерт')) return 'cupcake';
+  // Pancakes
+  if (name.includes('pancake') || name.includes('naleśnik') || name.includes('млинц') || name.includes('pfannkuchen') || name.includes('crepe') || name.includes('оладк')) return 'circle-outline';
+  // Chicken
+  if (name.includes('chicken') || name.includes('kurczak') || name.includes('курк') || name.includes('курят') || name.includes('huhn') || name.includes('hähnchen')) return 'food-drumstick';
+  // Fish
+  if (name.includes('fish') || name.includes('ryb') || name.includes('риб') || name.includes('fisch') || name.includes('salmon') || name.includes('łosoś') || name.includes('лосось')) return 'fish';
+  // Meat/Beef
+  if (name.includes('beef') || name.includes('wołowin') || name.includes('яловичин') || name.includes('steak') || name.includes('stek') || name.includes('стейк') || name.includes('mięs') || name.includes("м'яс") || name.includes('kotlet')) return 'food-steak';
+  // Pork
+  if (name.includes('pork') || name.includes('wieprz') || name.includes('свинин') || name.includes('schwein') || name.includes('bacon') || name.includes('boczek') || name.includes('бекон')) return 'pig-variant';
+  // Potato/Dumplings
+  if (name.includes('potato') || name.includes('ziemniak') || name.includes('картопл') || name.includes('dumpling') || name.includes('kluski') || name.includes('вареник') || name.includes('pierogi')) return 'food';
+  // Rice
+  if (name.includes('rice') || name.includes('ryż') || name.includes('рис') || name.includes('reis') || name.includes('risotto')) return 'rice';
+  // Vegetables
+  if (name.includes('vegetable') || name.includes('warzyw') || name.includes('овоч') || name.includes('gemüse') || name.includes('vegan')) return 'leaf';
+  // Smoothie/Drink
+  if (name.includes('smoothie') || name.includes('koktajl') || name.includes('смузі') || name.includes('shake') || name.includes('drink')) return 'cup';
+  // Bread
+  if (name.includes('bread') || name.includes('chleb') || name.includes('хліб') || name.includes('brot') || name.includes('bułk')) return 'baguette';
+  // Fruit
+  if (name.includes('plum') || name.includes('śliwk') || name.includes('слив') || name.includes('fruit') || name.includes('owoc') || name.includes('фрукт') || name.includes('apple') || name.includes('jabłk')) return 'fruit-cherries';
+  // Stir-fry/Asian
+  if (name.includes('stir') || name.includes('wok') || name.includes('asian') || name.includes('chinese') || name.includes('chiński')) return 'noodles';
+  // Burger
+  if (name.includes('burger') || name.includes('hamburger') || name.includes('бургер')) return 'hamburger';
+  // Wrap/Taco
+  if (name.includes('wrap') || name.includes('burrito') || name.includes('taco') || name.includes('тако') || name.includes('tortilla')) return 'taco';
+  // Breakfast
+  if (name.includes('breakfast') || name.includes('śniadani') || name.includes('сніданок') || name.includes('frühstück')) return 'coffee';
+  // Cheese
+  if (name.includes('cheese') || name.includes('ser ') || name.includes('serow') || name.includes('сир') || name.includes('käse')) return 'cheese';
 
   return 'silverware-fork-knife';
 };
@@ -206,9 +307,9 @@ export function RecipeCard({ recipe, isFavorite = false, onToggleFavorite }: Rec
                   ]}
                 >
                   <Ionicons
-                    name={isAvailable ? 'checkmark-circle' : 'alert-circle'}
+                    name={isAvailable ? 'checkmark-circle' : 'add-circle-outline'}
                     size={14}
-                    color={isAvailable ? '#2E7D32' : '#C62828'}
+                    color={isAvailable ? '#1976D2' : '#F57C00'}
                     style={styles.chipIcon}
                   />
                   <Text
@@ -439,20 +540,20 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   availableChip: {
-    backgroundColor: '#E8F5E9',
+    backgroundColor: '#E3F2FD',
   },
   missingChip: {
-    backgroundColor: '#FFEBEE',
+    backgroundColor: '#FFF3E0',
   },
   ingredientText: {
     fontSize: 13,
     fontWeight: '500',
   },
   availableText: {
-    color: '#2E7D32',
+    color: '#1976D2',
   },
   missingText: {
-    color: '#C62828',
+    color: '#F57C00',
   },
   moreChip: {
     backgroundColor: '#F5F5F5',
