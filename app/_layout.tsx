@@ -1,12 +1,28 @@
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { I18nextProvider } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import * as Sentry from '@sentry/react-native';
 import i18n, { loadSavedLanguage } from '../src/locales/i18n';
 import { initRevenueCat } from '../src/services/subscription';
 
-export default function RootLayout() {
+const SENTRY_DSN = Platform.OS === 'ios'
+  ? process.env.EXPO_PUBLIC_SENTRY_DSN_IOS
+  : process.env.EXPO_PUBLIC_SENTRY_DSN_ANDROID;
+
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    _experiments: {
+      profilesSampleRate: 1.0,
+    },
+  });
+}
+
+function RootLayout() {
   useEffect(() => {
     loadSavedLanguage();
     initRevenueCat();
@@ -83,3 +99,5 @@ export default function RootLayout() {
     </I18nextProvider>
   );
 }
+
+export default SENTRY_DSN ? Sentry.wrap(RootLayout) : RootLayout;

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Purchases, { PurchasesPackage, CustomerInfo } from 'react-native-purchases';
+import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import { Platform } from 'react-native';
 import { ScanUsage } from '../types';
 
