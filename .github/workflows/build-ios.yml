@@ -39,7 +39,7 @@ jobs:
   build-and-submit:
     name: Build iOS & Submit to TestFlight
     needs: test
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 60
     env:
       SCHEME: FridgeScanner
