@@ -18,7 +18,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This app needs camera access to scan your fridge contents",
-        "NSPhotoLibraryUsageDescription": "This app needs photo library access to select fridge photos"
+        "NSPhotoLibraryUsageDescription": "This app needs photo library access to select fridge photos",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
