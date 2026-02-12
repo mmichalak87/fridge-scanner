@@ -1,0 +1,63 @@
+const sentryProject = process.env.SENTRY_PROJECT || 'cookview-apple-ios';
+
+export default {
+  expo: {
+    name: 'CookVision',
+    slug: 'fridge',
+    version: '1.0.0',
+    orientation: 'portrait',
+    icon: './assets/icon.png',
+    userInterfaceStyle: 'light',
+    newArchEnabled: true,
+    scheme: 'fridge',
+    splash: {
+      image: './assets/splash-icon.png',
+      resizeMode: 'contain',
+      backgroundColor: '#4CAF50',
+    },
+    ios: {
+      bundleIdentifier: 'com.4orce-tech.fridgescanner',
+      supportsTablet: true,
+      infoPlist: {
+        NSCameraUsageDescription: 'This app needs camera access to scan your fridge contents',
+        NSPhotoLibraryUsageDescription: 'This app needs photo library access to select fridge photos',
+        ITSAppUsesNonExemptEncryption: false,
+      },
+    },
+    android: {
+      adaptiveIcon: {
+        foregroundImage: './assets/adaptive-icon.png',
+        backgroundColor: '#4CAF50',
+      },
+      edgeToEdgeEnabled: true,
+      permissions: ['CAMERA', 'READ_EXTERNAL_STORAGE'],
+    },
+    web: {
+      favicon: './assets/favicon.png',
+      bundler: 'metro',
+    },
+    plugins: [
+      'expo-router',
+      'expo-localization',
+      [
+        'expo-camera',
+        {
+          cameraPermission: 'Allow CookVision to access your camera to scan fridge contents',
+        },
+      ],
+      [
+        'expo-image-picker',
+        {
+          photosPermission: 'Allow CookVision to access your photos',
+        },
+      ],
+      [
+        '@sentry/react-native/expo',
+        {
+          organization: 'o4510874435780608',
+          project: sentryProject,
+        },
+      ],
+    ],
+  },
+};

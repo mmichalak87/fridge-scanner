@@ -16,7 +16,7 @@ env:
   EXPO_PUBLIC_SENTRY_DSN_ANDROID: ${{ secrets.EXPO_PUBLIC_SENTRY_DSN_ANDROID }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   SENTRY_ORG: o4510874435780608
-  SENTRY_PROJECT: react-native
+  SENTRY_PROJECT: cookview-apple-ios
 
 jobs:
   test:
@@ -66,12 +66,12 @@ jobs:
 
       - name: Set version and build number
         run: |
-          # Get version from release tag (v1.0.0 -> 1.0.0), fallback to app.json
+          # Get version from release tag (v1.0.0 -> 1.0.0), fallback to app.config.js
           if [[ "${{ github.event_name }}" == "release" ]]; then
             VERSION="${{ github.event.release.tag_name }}"
             VERSION="${VERSION#v}"  # Remove 'v' prefix
           else
-            VERSION=$(node -p "require('./app.json').expo.version")
+            VERSION=$(node -p "require('./app.config.js').default.expo.version")
           fi
 
           # Use GitHub run number as build number (auto-increments: 1, 2, 3...)
@@ -81,12 +81,12 @@ jobs:
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
           echo "Version: $VERSION, Build: $BUILD_NUMBER"
 
-          # Update app.json with new version
+          # Update version in app.config.js
           node -e "
             const fs = require('fs');
-            const app = JSON.parse(fs.readFileSync('app.json', 'utf8'));
-            app.expo.version = '$VERSION';
-            fs.writeFileSync('app.json', JSON.stringify(app, null, 2));
+            let content = fs.readFileSync('app.config.js', 'utf8');
+            content = content.replace(/version: '[^']*'/, \"version: '$VERSION'\");
+            fs.writeFileSync('app.config.js', content);
           "
 
       - name: Generate native iOS project
