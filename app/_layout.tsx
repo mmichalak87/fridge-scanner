@@ -4,10 +4,12 @@ import { StatusBar } from 'expo-status-bar';
 import { I18nextProvider } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import i18n, { loadSavedLanguage } from '../src/locales/i18n';
+import { initRevenueCat } from '../src/services/subscription';
 
 export default function RootLayout() {
   useEffect(() => {
     loadSavedLanguage();
+    initRevenueCat();
   }, []);
 
   return (
@@ -23,6 +25,7 @@ export default function RootLayout() {
             headerTitleStyle: {
               fontWeight: '600',
             },
+            headerBackTitle: ' ',
             contentStyle: {
               backgroundColor: '#f5f5f5',
             },
@@ -38,6 +41,8 @@ export default function RootLayout() {
             name="index"
             options={{
               headerShown: false,
+              title: '',
+              headerBackTitle: ' ',
             }}
           />
           <Stack.Screen
@@ -64,6 +69,13 @@ export default function RootLayout() {
             name="favorites"
             options={{
               title: 'Favorites',
+            }}
+          />
+          <Stack.Screen
+            name="paywall"
+            options={{
+              title: 'Pro',
+              presentation: 'modal',
             }}
           />
         </Stack>

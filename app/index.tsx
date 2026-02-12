@@ -7,12 +7,14 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getRecentScans, getFavoriteRecipes, RecentScan } from '../src/services/storage';
+import { useSubscription } from '../src/hooks/useSubscription';
 
 const { width } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { isPro, remainingScans, refresh: refreshSubscription } = useSubscription();
   const [isLoading, setIsLoading] = useState(true);
   const [recentScans, setRecentScans] = useState<RecentScan[]>([]);
   const [favoritesCount, setFavoritesCount] = useState(0);
@@ -24,6 +26,7 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(() => {
       loadData();
+      refreshSubscription();
     }, [])
   );
 
@@ -165,6 +168,27 @@ export default function HomeScreen() {
             >
               <Ionicons name="images" size={26} color="#4CAF50" />
               <Text style={styles.secondaryButtonText}>{t('home.galleryButton')}</Text>
+            </TouchableOpacity>
+
+            {/* Scan counter */}
+            <TouchableOpacity
+              style={styles.scanCounter}
+              onPress={() => !isPro && router.push('/paywall')}
+              activeOpacity={isPro ? 1 : 0.7}
+            >
+              <Ionicons
+                name={isPro ? 'diamond' : 'scan-outline'}
+                size={16}
+                color={isPro ? '#FFD700' : '#4CAF50'}
+              />
+              <Text style={[styles.scanCounterText, isPro && styles.scanCounterTextPro]}>
+                {isPro
+                  ? t('subscription.unlimited')
+                  : t('subscription.remainingScans', { count: remainingScans as number })}
+              </Text>
+              {!isPro && (
+                <Ionicons name="chevron-forward" size={14} color="#4CAF50" />
+              )}
             </TouchableOpacity>
           </View>
 
@@ -407,6 +431,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#2E7D32',
+  },
+  scanCounter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 14,
+  },
+  scanCounterText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#2E7D32',
+  },
+  scanCounterTextPro: {
+    color: '#B8860B',
   },
   recentSection: {
     width: '100%',

@@ -1,12 +1,17 @@
 import { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 import { LANGUAGES, saveLanguage } from '../src/locales/i18n';
+import { useSubscription } from '../src/hooks/useSubscription';
+import { Ionicons } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 
 export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
   const navigation = useNavigation();
+  const router = useRouter();
+  const { isPro, remainingScans, restore } = useSubscription();
 
   useEffect(() => {
     navigation.setOptions({
@@ -20,6 +25,48 @@ export default function SettingsScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Subscription Section */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>{t('subscription.currentPlan')}</Text>
+        <View style={styles.subscriptionCard}>
+          <View style={styles.subscriptionHeader}>
+            <View style={[styles.planChip, isPro && styles.planChipPro]}>
+              <Ionicons
+                name={isPro ? 'diamond' : 'person'}
+                size={14}
+                color={isPro ? '#FFD700' : '#666'}
+              />
+              <Text style={[styles.planChipText, isPro && styles.planChipTextPro]}>
+                {isPro ? t('subscription.pro') : t('subscription.free')}
+              </Text>
+            </View>
+            <Text style={styles.scanInfo}>
+              {isPro
+                ? t('subscription.unlimited')
+                : t('subscription.remainingScans', { count: remainingScans as number })}
+            </Text>
+          </View>
+          {!isPro && (
+            <TouchableOpacity
+              style={styles.upgradeButton}
+              onPress={() => router.push('/paywall')}
+            >
+              <Ionicons name="diamond" size={18} color="#fff" />
+              <Text style={styles.upgradeButtonText}>{t('subscription.upgrade')}</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            style={styles.restoreButton}
+            onPress={async () => {
+              const success = await restore();
+              Alert.alert('', success ? t('subscription.restoreSuccess') : t('subscription.restoreFailed'));
+            }}
+          >
+            <Text style={styles.restoreButtonText}>{t('subscription.restore')}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('settings.language')}</Text>
         <View style={styles.languageList}>
@@ -55,7 +102,7 @@ export default function SettingsScreen() {
         <Text style={styles.sectionTitle}>{t('settings.about')}</Text>
         <View style={styles.aboutCard}>
           <Text style={styles.appName}>{t('settings.appName')}</Text>
-          <Text style={styles.appVersion}>{t('settings.version')}</Text>
+          <Text style={styles.appVersion}>{t('settings.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}</Text>
           <Text style={styles.appDescription}>
             {t('settings.appDescription')}
           </Text>
@@ -124,6 +171,66 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#4CAF50',
     fontWeight: '600',
+  },
+  subscriptionCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
+  },
+  subscriptionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  planChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  planChipPro: {
+    backgroundColor: '#2E7D32',
+  },
+  planChipText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#666',
+  },
+  planChipTextPro: {
+    color: '#fff',
+  },
+  scanInfo: {
+    fontSize: 13,
+    color: '#888',
+    fontWeight: '500',
+  },
+  upgradeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#4CAF50',
+    paddingVertical: 14,
+    borderRadius: 12,
+    gap: 8,
+    marginBottom: 8,
+  },
+  upgradeButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  restoreButton: {
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  restoreButtonText: {
+    fontSize: 14,
+    color: '#4CAF50',
+    fontWeight: '500',
   },
   aboutCard: {
     backgroundColor: '#fff',
