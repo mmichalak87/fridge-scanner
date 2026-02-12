@@ -1,10 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Recipe, Product } from '../types';
+import { getMaxFavorites, getMaxRecentScans } from './subscription';
 
 const RECENT_SCANS_KEY = 'recent_scans';
 const FAVORITE_RECIPES_KEY = 'favorite_recipes';
-const MAX_RECENT_SCANS = 5;
-const MAX_FAVORITES = 5;
 
 export interface RecentScan {
   id: string;
@@ -24,10 +23,12 @@ export async function saveRecentScan(
   imageBase64: string,
   products: Product[],
   completeRecipes: Recipe[],
-  needMoreRecipes: Recipe[]
+  needMoreRecipes: Recipe[],
+  isPro: boolean = false
 ): Promise<void> {
   try {
     const scans = await getRecentScans();
+    const maxScans = getMaxRecentScans(isPro);
 
     const newScan: RecentScan = {
       id: Date.now().toString(),
@@ -38,8 +39,7 @@ export async function saveRecentScan(
       timestamp: Date.now(),
     };
 
-    // Add new scan at the beginning and keep only MAX_RECENT_SCANS
-    const updatedScans = [newScan, ...scans].slice(0, MAX_RECENT_SCANS);
+    const updatedScans = [newScan, ...scans].slice(0, maxScans);
 
     await AsyncStorage.setItem(RECENT_SCANS_KEY, JSON.stringify(updatedScans));
   } catch (error) {
@@ -78,9 +78,10 @@ export async function getRecentScanById(id: string): Promise<RecentScan | null> 
 }
 
 // Favorite Recipes
-export async function saveFavoriteRecipe(recipe: Recipe): Promise<boolean> {
+export async function saveFavoriteRecipe(recipe: Recipe, isPro: boolean = false): Promise<boolean> {
   try {
     const favorites = await getFavoriteRecipes();
+    const maxFavorites = getMaxFavorites(isPro);
 
     // Check if already exists
     if (favorites.some(fav => fav.id === recipe.id)) {
@@ -88,7 +89,7 @@ export async function saveFavoriteRecipe(recipe: Recipe): Promise<boolean> {
     }
 
     // Check if max reached
-    if (favorites.length >= MAX_FAVORITES) {
+    if (favorites.length >= maxFavorites) {
       return false;
     }
 

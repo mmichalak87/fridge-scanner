@@ -10,6 +10,8 @@ import { ProductList } from '../src/components/ProductList';
 import { RecipeCard } from '../src/components/RecipeCard';
 import { Product, Recipe } from '../src/types';
 import { saveRecentScan, saveFavoriteRecipe, removeFavoriteRecipe, getFavoriteRecipes, getRecentScanById } from '../src/services/storage';
+import { useSubscription } from '../src/hooks/useSubscription';
+import { FREE_DAILY_SCANS } from '../src/services/subscription';
 
 function AnimatedLoader({ t }: { t: (key: string) => string }) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -224,6 +226,7 @@ export default function ResultsScreen() {
   const navigation = useNavigation();
   const { t, i18n } = useTranslation();
 
+  const { isPro, canScan: checkCanScan, recordScan } = useSubscription();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -274,6 +277,21 @@ export default function ResultsScreen() {
   };
 
   const performAnalysis = async () => {
+    // Check scan limit before analyzing
+    const allowed = await checkCanScan();
+    if (!allowed) {
+      setIsLoading(false);
+      Alert.alert(
+        t('subscription.scanLimitReached'),
+        t('subscription.scanLimitMessage', { limit: FREE_DAILY_SCANS }),
+        [
+          { text: t('common.cancel'), onPress: () => router.back(), style: 'cancel' },
+          { text: t('subscription.upgrade'), onPress: () => { router.back(); router.push('/paywall'); } },
+        ]
+      );
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
@@ -283,12 +301,14 @@ export default function ResultsScreen() {
       setCompleteRecipes(result.completeRecipes || []);
       setNeedMoreRecipes(result.needMoreRecipes || []);
 
-      // Save to recent scans with recipes
+      // Record the scan and save to recent scans
+      await recordScan();
       await saveRecentScan(
         imageBase64!,
         result.products,
         result.completeRecipes || [],
-        result.needMoreRecipes || []
+        result.needMoreRecipes || [],
+        isPro
       );
     } catch (err) {
       console.error('Analysis failed:', err);
@@ -310,7 +330,7 @@ export default function ResultsScreen() {
       });
       Alert.alert('', t('favorites.removed'));
     } else {
-      const success = await saveFavoriteRecipe(recipe);
+      const success = await saveFavoriteRecipe(recipe, isPro);
       if (success) {
         setFavoriteIds(prev => new Set(prev).add(recipe.id));
         Alert.alert('', t('favorites.added'));

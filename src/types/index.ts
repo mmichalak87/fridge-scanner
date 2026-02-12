@@ -44,3 +44,10 @@ export interface AppState {
   recipes: Recipe[];
   error: string | null;
 }
+
+export type SubscriptionTier = 'free' | 'pro';
+
+export interface ScanUsage {
+  date: string;
+  count: number;
+}
