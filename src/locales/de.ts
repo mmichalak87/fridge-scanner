@@ -4,7 +4,7 @@ export default {
     next: 'Weiter',
     start: 'Los gehts',
     welcome: {
-      title: 'Willkommen beim Kuhlschrank Scanner',
+      title: 'Willkommen bei CookVision',
       description: 'Ihr intelligenter Kuchenassistent, der Ihnen hilft, leckere Rezepte aus Zutaten zu entdecken, die Sie bereits haben.',
     },
     scan: {
@@ -25,7 +25,7 @@ export default {
     back: 'Zuruck',
   },
   home: {
-    title: 'Kuhlschrank Scanner',
+    title: 'CookVision',
     subtitle: 'Scannen Sie Ihren Kuhlschrank und entdecken Sie Rezepte',
     scanButton: 'Kuhlschrank Scannen',
     galleryButton: 'Aus Galerie Wahlen',
@@ -89,7 +89,7 @@ export default {
     title: 'Einstellungen',
     language: 'Sprache',
     about: 'Uber',
-    appName: 'Kuhlschrank Scanner',
+    appName: 'CookVision',
     version: 'Version 1.0.0',
     appDescription: 'Scannen Sie Ihren Kuhlschrank und entdecken Sie leckere Rezepte mit intelligenter Zutatenerkennung.',
     poweredBy: 'Powered by Google Gemini',

@@ -4,7 +4,7 @@ export default {
     next: 'Dalej',
     start: 'Zaczynamy',
     welcome: {
-      title: 'Witaj w Skanerze Lodówki',
+      title: 'Witaj w CookVision',
       description: 'Twój inteligentny asystent kuchenny, który pomoże Ci odkryć pyszne przepisy z produktów, które już masz.',
     },
     scan: {
@@ -25,7 +25,7 @@ export default {
     back: 'Wstecz',
   },
   home: {
-    title: 'Skaner Lodówki',
+    title: 'CookVision',
     subtitle: 'Zeskanuj lodówkę i odkryj przepisy',
     scanButton: 'Skanuj Lodówkę',
     galleryButton: 'Wybierz z Galerii',
@@ -89,7 +89,7 @@ export default {
     title: 'Ustawienia',
     language: 'Język',
     about: 'O Aplikacji',
-    appName: 'Skaner Lodówki',
+    appName: 'CookVision',
     version: 'Wersja 1.0.0',
     appDescription: 'Skanuj zawartość lodówki i odkrywaj pyszne przepisy dzięki inteligentnemu rozpoznawaniu składników.',
     poweredBy: 'Powered by Google Gemini',

@@ -4,7 +4,7 @@ export default {
     next: 'Далі',
     start: 'Почати',
     welcome: {
-      title: 'Ласкаво просимо до Сканера Холодильника',
+      title: 'Ласкаво просимо до CookVision',
       description: 'Ваш розумний кухонний помічник, який допоможе вам відкрити смачні рецепти з продуктів, які у вас вже є.',
     },
     scan: {
@@ -25,7 +25,7 @@ export default {
     back: 'Назад',
   },
   home: {
-    title: 'Сканер Холодильника',
+    title: 'CookVision',
     subtitle: 'Скануйте холодильник і відкрийте рецепти',
     scanButton: 'Сканувати Холодильник',
     galleryButton: 'Вибрати з Галереї',
@@ -89,7 +89,7 @@ export default {
     title: 'Налаштування',
     language: 'Мова',
     about: 'Про Додаток',
-    appName: 'Сканер Холодильника',
+    appName: 'CookVision',
     version: 'Версія 1.0.0',
     appDescription: 'Скануйте вміст холодильника та відкривайте смачні рецепти завдяки розумному розпізнаванню інгредієнтів.',
     poweredBy: 'Powered by Google Gemini',

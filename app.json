@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Fridge Scanner",
+    "name": "CookVision",
     "slug": "fridge",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -43,13 +43,13 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow Fridge Scanner to access your camera to scan fridge contents"
+          "cameraPermission": "Allow CookVision to access your camera to scan fridge contents"
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow Fridge Scanner to access your photos"
+          "photosPermission": "Allow CookVision to access your photos"
         }
       ]
     ]

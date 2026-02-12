@@ -4,7 +4,7 @@ export default {
     next: 'Next',
     start: 'Get Started',
     welcome: {
-      title: 'Welcome to Fridge Scanner',
+      title: 'Welcome to CookVision',
       description: 'Your smart kitchen assistant that helps you discover delicious recipes from ingredients you already have.',
     },
     scan: {
@@ -25,7 +25,7 @@ export default {
     back: 'Back',
   },
   home: {
-    title: 'Fridge Scanner',
+    title: 'CookVision',
     subtitle: 'Scan your fridge and discover recipes',
     scanButton: 'Scan Fridge',
     galleryButton: 'Choose from Gallery',
@@ -89,7 +89,7 @@ export default {
     title: 'Settings',
     language: 'Language',
     about: 'About',
-    appName: 'Fridge Scanner',
+    appName: 'CookVision',
     version: 'Version 1.0.0',
     appDescription: 'Scan your fridge contents and discover delicious recipes with smart ingredient recognition.',
     poweredBy: 'Powered by Google Gemini',

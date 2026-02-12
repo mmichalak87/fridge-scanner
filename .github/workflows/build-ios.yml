@@ -42,9 +42,9 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 60
     env:
-      SCHEME: FridgeScanner
-      WORKSPACE: ios/FridgeScanner.xcworkspace
-      ARCHIVE_PATH: build/FridgeScanner.xcarchive
+      SCHEME: CookVision
+      WORKSPACE: ios/CookVision.xcworkspace
+      ARCHIVE_PATH: build/CookVision.xcarchive
       IPA_PATH: build/ipa
     steps:
       - name: Checkout repository
@@ -163,7 +163,7 @@ jobs:
           # Upload using xcrun
           xcrun altool --upload-app \
             --type ios \
-            --file "$IPA_PATH/FridgeScanner.ipa" \
+            --file "$IPA_PATH/CookVision.ipa" \
             --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
             --apiIssuer "$APP_STORE_CONNECT_API_ISSUER_ID" \
             --show-progress
