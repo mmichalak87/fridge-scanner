@@ -54,7 +54,7 @@ export default {
       [
         '@sentry/react-native/expo',
         {
-          organization: 'o4510874435780608',
+          organization: 'cookview-apple-ios',
           project: sentryProject,
         },
       ],
