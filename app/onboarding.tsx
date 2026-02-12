@@ -58,6 +58,7 @@ export default function OnboardingScreen() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const slideAnim = useRef(new Animated.Value(0)).current;
   const iconRotate = useRef(new Animated.Value(0)).current;
+  const iconRotateValue = useRef(0);
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const dotScaleAnims = useRef(slides.map(() => new Animated.Value(1))).current;
 
@@ -162,7 +163,7 @@ export default function OnboardingScreen() {
           useNativeDriver: true,
         }),
         Animated.timing(iconRotate, {
-          toValue: iconRotate._value + 1,
+          toValue: ++iconRotateValue.current,
           duration: 600,
           easing: Easing.out(Easing.ease),
           useNativeDriver: true,
