@@ -59,8 +59,40 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set version and build number
+        run: |
+          # Get version from release tag (v1.0.0 -> 1.0.0), fallback to app.json
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"  # Remove 'v' prefix
+          else
+            VERSION=$(node -p "require('./app.json').expo.version")
+          fi
+
+          # Use GitHub run number as build number (auto-increments: 1, 2, 3...)
+          BUILD_NUMBER="${{ github.run_number }}"
+
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+          echo "Version: $VERSION, Build: $BUILD_NUMBER"
+
+          # Update app.json with new version
+          node -e "
+            const fs = require('fs');
+            const app = JSON.parse(fs.readFileSync('app.json', 'utf8'));
+            app.expo.version = '$VERSION';
+            fs.writeFileSync('app.json', JSON.stringify(app, null, 2));
+          "
+
       - name: Generate native iOS project
         run: npx expo prebuild --platform ios --clean
+
+      - name: Update iOS version and build number
+        run: |
+          # Update Info.plist with version and build number
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" ios/CookVision/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/CookVision/Info.plist
+          echo "Set iOS version to $VERSION ($BUILD_NUMBER)"
 
       - name: Setup Ruby & CocoaPods
         uses: ruby/setup-ruby@v1
