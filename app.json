@@ -51,6 +51,13 @@
         {
           "photosPermission": "Allow CookVision to access your photos"
         }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "o4510874435780608",
+          "project": "react-native"
+        }
       ]
     ]
   }
