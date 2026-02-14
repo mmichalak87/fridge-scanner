@@ -116,13 +116,8 @@ jobs:
 
       - name: Set version and build number
         run: |
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            VERSION="${{ github.event.release.tag_name }}"
-            VERSION="${VERSION#v}"
-          else
-            VERSION=$(node -p "require('./app.config.js').default.expo.version")
-          fi
-
+          # Read version from app.config.js (already updated by bump-version job)
+          VERSION=$(node -p "require('./app.config.js').default.expo.version")
           BUILD_NUMBER="${{ github.run_number }}"
 
           echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -146,19 +141,47 @@ jobs:
 
       - name: Fix Firebase Podfile configuration
         run: |
-          cat >> ios/Podfile << 'EOF'
+          cd ios
 
-          # Fix for Firebase Swift pods requiring modular headers
-          post_install do |installer|
-            installer.pods_project.targets.each do |target|
-              if ['GoogleUtilities', 'GoogleDataTransport', 'nanopb'].include?(target.name)
-                target.build_configurations.each do |config|
-                  config.build_settings['DEFINES_MODULE'] = 'YES'
+          # Create Ruby script to properly modify Podfile
+          cat > fix_podfile.rb << 'RUBY'
+          podfile_path = 'Podfile'
+          content = File.read(podfile_path)
+
+          # Firebase modular headers fix
+          firebase_fix = <<~FIX
+
+                # Fix for Firebase Swift pods requiring modular headers
+                installer.pods_project.targets.each do |target|
+                  if ['GoogleUtilities', 'GoogleDataTransport', 'nanopb', 'FirebaseCore', 'FirebaseCoreInternal'].include?(target.name)
+                    target.build_configurations.each do |config|
+                      config.build_settings['DEFINES_MODULE'] = 'YES'
+                    end
+                  end
                 end
-              end
+          FIX
+
+          # Check if there's already a post_install block
+          if content =~ /post_install do \|installer\|/
+            # Insert our fix right after the post_install line
+            content.sub!(/post_install do \|installer\|/) do |match|
+              match + firebase_fix
             end
+          else
+            # No post_install, add it at the end
+            content += "\npost_install do |installer|#{firebase_fix}\nend\n"
           end
-          EOF
+
+          File.write(podfile_path, content)
+          puts "✅ Podfile updated with Firebase fix"
+          RUBY
+
+          # Run the Ruby script
+          ruby fix_podfile.rb
+
+          # Show the modified Podfile for debugging
+          echo "--- Modified Podfile (last 50 lines) ---"
+          tail -50 Podfile
 
       - name: Setup Ruby & CocoaPods
         uses: ruby/setup-ruby@v1
@@ -290,13 +313,8 @@ jobs:
 
       - name: Set version and build number
         run: |
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            VERSION="${{ github.event.release.tag_name }}"
-            VERSION="${VERSION#v}"
-          else
-            VERSION=$(node -p "require('./app.config.js').default.expo.version")
-          fi
-
+          # Read version from app.config.js (already updated by bump-version job)
+          VERSION=$(node -p "require('./app.config.js').default.expo.version")
           BUILD_NUMBER="${{ github.run_number }}"
 
           echo "VERSION=$VERSION" >> $GITHUB_ENV
