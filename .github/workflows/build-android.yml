@@ -60,28 +60,13 @@ jobs:
 
       - name: Set version and build number
         run: |
-          # Get version from release tag (v1.0.0 -> 1.0.0), fallback to app.config.js
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            VERSION="${{ github.event.release.tag_name }}"
-            VERSION="${VERSION#v}"  # Remove 'v' prefix
-          else
-            VERSION=$(node -p "require('./app.config.js').default.expo.version")
-          fi
-
-          # Use GitHub run number as build number (auto-increments: 1, 2, 3...)
+          # Read version from app.config.js
+          VERSION=$(node -p "require('./app.config.js').default.expo.version")
           BUILD_NUMBER="${{ github.run_number }}"
 
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
           echo "Version: $VERSION, Build: $BUILD_NUMBER"
-
-          # Update version in app.config.js
-          node -e "
-            const fs = require('fs');
-            let content = fs.readFileSync('app.config.js', 'utf8');
-            content = content.replace(/version: '[^']*'/, \"version: '$VERSION'\");
-            fs.writeFileSync('app.config.js', content);
-          "
 
       - name: Setup Firebase config
         env:
