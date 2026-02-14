@@ -92,7 +92,7 @@ jobs:
           echo -n "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode > GoogleService-Info.plist
 
       - name: Generate native iOS project
-        run: npx expo prebuild --platform ios --clean
+        run: npx expo prebuild --platform ios --clean --skip-dependency-update
 
       - name: Update iOS version and build number
         run: |
