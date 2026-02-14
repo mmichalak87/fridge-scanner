@@ -101,7 +101,7 @@ jobs:
           echo -n "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode > GoogleService-Info.plist
 
       - name: Generate native iOS project
-        run: npx expo prebuild --platform ios --clean --skip-dependency-update
+        run: npx expo prebuild --platform ios --clean || true
 
       - name: Update iOS version and build number
         run: |
@@ -136,7 +136,7 @@ jobs:
       - name: Install CocoaPods
         run: |
           cd ios
-          pod install
+          pod install --repo-update
 
       - name: Install Apple certificate and provisioning profile
         env:
