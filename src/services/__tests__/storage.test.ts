@@ -21,21 +21,20 @@ describe('Storage Service', () => {
 
   describe('Recent Scans', () => {
     const mockProducts: Product[] = [
-      { id: '1', name: 'Apple', quantity: '2' },
-      { id: '2', name: 'Banana', quantity: '3' },
+      { id: '1', name: 'Apple' },
+      { id: '2', name: 'Banana' },
     ];
 
     const mockRecipes: Recipe[] = [
       {
         id: '1',
-        title: 'Test Recipe',
-        description: 'Test description',
+        name: 'Test Recipe',
         ingredients: ['Apple', 'Banana'],
-        instructions: ['Mix', 'Cook'],
-        cookingTime: '30 min',
-        difficulty: 'Easy',
-        servings: 4,
+        availableIngredients: ['Apple', 'Banana'],
         missingIngredients: [],
+        instructions: 'Mix and cook',
+        prepTime: '30 min',
+        difficulty: 'easy',
       },
     ];
 
@@ -132,14 +131,13 @@ describe('Storage Service', () => {
   describe('Favorite Recipes', () => {
     const mockRecipe: Recipe = {
       id: 'recipe-1',
-      title: 'Test Recipe',
-      description: 'Test description',
+      name: 'Test Recipe',
       ingredients: ['Apple', 'Banana'],
-      instructions: ['Mix', 'Cook'],
-      cookingTime: '30 min',
-      difficulty: 'Easy',
-      servings: 4,
+      availableIngredients: ['Apple', 'Banana'],
       missingIngredients: [],
+      instructions: 'Mix and cook',
+      prepTime: '30 min',
+      difficulty: 'easy',
     };
 
     it('should save a favorite recipe', async () => {
