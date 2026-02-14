@@ -101,6 +101,23 @@ jobs:
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/CookVision/Info.plist
           echo "Set iOS version to $VERSION ($BUILD_NUMBER)"
 
+      - name: Fix Firebase Podfile configuration
+        run: |
+          # Add modular headers configuration for Firebase dependencies
+          cat >> ios/Podfile << 'EOF'
+
+          # Fix for Firebase Swift pods requiring modular headers
+          post_install do |installer|
+            installer.pods_project.targets.each do |target|
+              if ['GoogleUtilities', 'GoogleDataTransport', 'nanopb'].include?(target.name)
+                target.build_configurations.each do |config|
+                  config.build_settings['DEFINES_MODULE'] = 'YES'
+                end
+              end
+            end
+          end
+          EOF
+
       - name: Setup Ruby & CocoaPods
         uses: ruby/setup-ruby@v1
         with:
