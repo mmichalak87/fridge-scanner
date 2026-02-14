@@ -16,6 +16,7 @@ export default {
     ios: {
       bundleIdentifier: 'com.4orce-tech.fridgescanner',
       supportsTablet: true,
+      googleServicesFile: './GoogleService-Info.plist',
       infoPlist: {
         NSCameraUsageDescription: 'This app needs camera access to scan your fridge contents',
         NSPhotoLibraryUsageDescription: 'This app needs photo library access to select fridge photos',
@@ -24,6 +25,7 @@ export default {
     },
     android: {
       package: 'com.forcetech.fridgescanner',
+      googleServicesFile: './google-services.json',
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#4CAF50',
