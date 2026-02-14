@@ -169,6 +169,17 @@ jobs:
       - name: Generate native iOS project
         run: npx expo prebuild --platform ios --clean
 
+      - name: Add modular headers to Podfile
+        run: |
+          # Add use_modular_headers! after platform :ios line in Podfile
+          sed -i '' "/platform :ios/a\\
+          use_modular_headers!
+          " ios/Podfile
+
+          echo "✅ Added use_modular_headers! to Podfile"
+          echo "Updated Podfile content:"
+          head -10 ios/Podfile
+
       - name: Update iOS version and build number
         run: |
           /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" ios/CookVision/Info.plist
