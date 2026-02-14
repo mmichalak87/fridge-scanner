@@ -1,6 +1,9 @@
+// Set environment variables for tests
+process.env.EXPO_PUBLIC_GEMINI_API_KEY = 'test-api-key';
+
 // Mock Expo Winter Runtime and globals
 global.__ExpoImportMetaRegistry = new Map();
-global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
+global.structuredClone = obj => JSON.parse(JSON.stringify(obj));
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -20,6 +23,28 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 // Mock expo-localization
 jest.mock('expo-localization', () => ({
   getLocales: jest.fn(() => [{ languageCode: 'en' }]),
+}));
+
+// Mock react-native Platform and AppState
+jest.mock('react-native', () => ({
+  Platform: {
+    OS: 'ios',
+    select: obj => obj.ios || obj.default,
+  },
+  AppState: {
+    addEventListener: jest.fn(() => ({
+      remove: jest.fn(),
+    })),
+  },
+  StyleSheet: {
+    create: styles => styles,
+    flatten: styles => styles,
+  },
+  View: 'View',
+  Text: 'Text',
+  ScrollView: 'ScrollView',
+  TouchableOpacity: 'TouchableOpacity',
+  Image: 'Image',
 }));
 
 // Mock Firebase
@@ -42,21 +67,29 @@ jest.mock('react-native-purchases', () => ({
   __esModule: true,
   default: {
     configure: jest.fn(() => Promise.resolve()),
-    getCustomerInfo: jest.fn(() => Promise.resolve({
-      entitlements: { active: {} },
-    })),
-    getOfferings: jest.fn(() => Promise.resolve({
-      all: {},
-      current: { availablePackages: [] },
-    })),
-    purchasePackage: jest.fn(() => Promise.resolve({
-      customerInfo: {
+    getCustomerInfo: jest.fn(() =>
+      Promise.resolve({
         entitlements: { active: {} },
-      },
-    })),
-    restorePurchases: jest.fn(() => Promise.resolve({
-      entitlements: { active: {} },
-    })),
+      })
+    ),
+    getOfferings: jest.fn(() =>
+      Promise.resolve({
+        all: {},
+        current: { availablePackages: [] },
+      })
+    ),
+    purchasePackage: jest.fn(() =>
+      Promise.resolve({
+        customerInfo: {
+          entitlements: { active: {} },
+        },
+      })
+    ),
+    restorePurchases: jest.fn(() =>
+      Promise.resolve({
+        entitlements: { active: {} },
+      })
+    ),
   },
 }));
 

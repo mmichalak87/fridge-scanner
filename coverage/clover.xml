@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1771057534232" clover="3.2.0">
-  <project timestamp="1771057534232" name="All files">
-    <metrics statements="406" coveredstatements="83" conditionals="737" coveredconditionals="24" methods="68" coveredmethods="23" elements="1211" coveredelements="130" complexity="0" loc="406" ncloc="406" packages="5" files="14" classes="14"/>
+<coverage generated="1771064404092" clover="3.2.0">
+  <project timestamp="1771064404092" name="All files">
+    <metrics statements="406" coveredstatements="156" conditionals="737" coveredconditionals="44" methods="68" coveredmethods="39" elements="1211" coveredelements="239" complexity="0" loc="406" ncloc="406" packages="5" files="14" classes="14"/>
     <package name="components">
-      <metrics statements="159" coveredstatements="0" conditionals="631" coveredconditionals="0" methods="17" coveredmethods="0"/>
+      <metrics statements="159" coveredstatements="3" conditionals="631" coveredconditionals="2" methods="17" coveredmethods="1"/>
       <file name="ProductList.tsx" path="/Users/macbook/projects/fridge/src/components/ProductList.tsx">
         <metrics statements="49" coveredstatements="0" conditionals="159" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="11" count="0" type="stmt"/>
@@ -167,53 +167,53 @@
         <line num="437" count="0" type="stmt"/>
       </file>
       <file name="SubstitutionBadge.tsx" path="/Users/macbook/projects/fridge/src/components/SubstitutionBadge.tsx">
-        <metrics statements="3" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
+        <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="11" count="6" type="stmt"/>
+        <line num="13" count="6" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/macbook/projects/fridge/src/components/index.ts">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
     </package>
     <package name="hooks">
-      <metrics statements="34" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="10" coveredmethods="0"/>
+      <metrics statements="34" coveredstatements="34" conditionals="4" coveredconditionals="4" methods="10" coveredmethods="10"/>
       <file name="useSubscription.ts" path="/Users/macbook/projects/fridge/src/hooks/useSubscription.ts">
-        <metrics statements="34" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="10" coveredmethods="0"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="54" count="0" type="stmt"/>
-        <line num="55" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="69" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="71" count="0" type="stmt"/>
-        <line num="74" count="0" type="stmt"/>
-        <line num="75" count="0" type="stmt"/>
-        <line num="76" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="77" count="0" type="stmt"/>
-        <line num="78" count="0" type="stmt"/>
-        <line num="80" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
+        <metrics statements="34" coveredstatements="34" conditionals="4" coveredconditionals="4" methods="10" coveredmethods="10"/>
+        <line num="24" count="37" type="stmt"/>
+        <line num="25" count="37" type="stmt"/>
+        <line num="26" count="37" type="stmt"/>
+        <line num="28" count="37" type="stmt"/>
+        <line num="29" count="50" type="stmt"/>
+        <line num="30" count="50" type="stmt"/>
+        <line num="31" count="46" type="stmt"/>
+        <line num="32" count="46" type="stmt"/>
+        <line num="33" count="46" type="stmt"/>
+        <line num="35" count="4" type="stmt"/>
+        <line num="37" count="50" type="stmt"/>
+        <line num="41" count="37" type="stmt"/>
+        <line num="42" count="11" type="stmt"/>
+        <line num="46" count="37" type="stmt"/>
+        <line num="48" count="37" type="stmt"/>
+        <line num="53" count="37" type="stmt"/>
+        <line num="54" count="11" type="stmt"/>
+        <line num="55" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="60" count="11" type="stmt"/>
+        <line num="61" count="11" type="stmt"/>
+        <line num="64" count="37" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="68" count="37" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="74" count="37" type="stmt"/>
+        <line num="75" count="2" type="stmt"/>
+        <line num="76" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="77" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="83" count="37" type="stmt"/>
       </file>
     </package>
     <package name="locales">
@@ -254,23 +254,23 @@
       </file>
     </package>
     <package name="services">
-      <metrics statements="194" coveredstatements="73" conditionals="94" coveredconditionals="22" methods="36" coveredmethods="21"/>
+      <metrics statements="194" coveredstatements="109" conditionals="94" coveredconditionals="36" methods="36" coveredmethods="26"/>
       <file name="gemini.ts" path="/Users/macbook/projects/fridge/src/services/gemini.ts">
-        <metrics statements="53" coveredstatements="0" conditionals="34" coveredconditionals="0" methods="7" coveredmethods="0"/>
-        <line num="5" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="16" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="109" count="0" type="stmt"/>
-        <line num="110" count="0" type="cond" truecount="0" falsecount="2"/>
+        <metrics statements="53" coveredstatements="36" conditionals="34" coveredconditionals="14" methods="7" coveredmethods="5"/>
+        <line num="5" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="16" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="108" count="4" type="stmt"/>
+        <line num="109" count="4" type="stmt"/>
+        <line num="110" count="4" type="cond" truecount="1" falsecount="1"/>
         <line num="111" count="0" type="stmt"/>
-        <line num="114" count="0" type="stmt"/>
-        <line num="115" count="0" type="stmt"/>
-        <line num="117" count="0" type="stmt"/>
-        <line num="124" count="0" type="stmt"/>
+        <line num="114" count="4" type="stmt"/>
+        <line num="115" count="4" type="stmt"/>
+        <line num="117" count="4" type="stmt"/>
+        <line num="124" count="4" type="stmt"/>
         <line num="125" count="0" type="stmt"/>
         <line num="126" count="0" type="stmt"/>
         <line num="128" count="0" type="stmt"/>
@@ -280,36 +280,36 @@
         <line num="136" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="140" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="145" count="0" type="stmt"/>
-        <line num="153" count="0" type="stmt"/>
-        <line num="154" count="0" type="stmt"/>
-        <line num="155" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="156" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="157" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="158" count="0" type="stmt"/>
-        <line num="160" count="0" type="stmt"/>
-        <line num="163" count="0" type="stmt"/>
-        <line num="168" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="153" count="4" type="stmt"/>
+        <line num="154" count="4" type="stmt"/>
+        <line num="155" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="156" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="157" count="4" type="cond" truecount="3" falsecount="1"/>
+        <line num="158" count="4" type="stmt"/>
+        <line num="160" count="4" type="stmt"/>
+        <line num="163" count="4" type="stmt"/>
+        <line num="168" count="4" type="cond" truecount="1" falsecount="1"/>
         <line num="169" count="0" type="stmt"/>
-        <line num="172" count="0" type="stmt"/>
-        <line num="173" count="0" type="stmt"/>
-        <line num="175" count="0" type="stmt"/>
-        <line num="187" count="0" type="stmt"/>
-        <line num="188" count="0" type="stmt"/>
-        <line num="189" count="0" type="stmt"/>
+        <line num="172" count="4" type="stmt"/>
+        <line num="173" count="8" type="stmt"/>
+        <line num="175" count="4" type="stmt"/>
+        <line num="187" count="4" type="stmt"/>
+        <line num="188" count="4" type="stmt"/>
+        <line num="189" count="4" type="stmt"/>
         <line num="190" count="0" type="stmt"/>
         <line num="191" count="0" type="stmt"/>
         <line num="193" count="0" type="stmt"/>
         <line num="194" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="195" count="0" type="stmt"/>
         <line num="198" count="0" type="stmt"/>
-        <line num="201" count="0" type="stmt"/>
-        <line num="202" count="0" type="stmt"/>
-        <line num="203" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="204" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="205" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="206" count="0" type="stmt"/>
-        <line num="208" count="0" type="stmt"/>
-        <line num="211" count="0" type="stmt"/>
+        <line num="201" count="4" type="stmt"/>
+        <line num="202" count="4" type="stmt"/>
+        <line num="203" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="204" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="205" count="4" type="cond" truecount="3" falsecount="1"/>
+        <line num="206" count="4" type="stmt"/>
+        <line num="208" count="4" type="stmt"/>
+        <line num="211" count="4" type="stmt"/>
       </file>
       <file name="storage.ts" path="/Users/macbook/projects/fridge/src/services/storage.ts">
         <metrics statements="54" coveredstatements="41" conditionals="12" coveredconditionals="9" methods="14" coveredmethods="14"/>
@@ -370,20 +370,20 @@
       </file>
       <file name="subscription.ts" path="/Users/macbook/projects/fridge/src/services/subscription.ts">
         <metrics statements="87" coveredstatements="32" conditionals="48" coveredconditionals="13" methods="15" coveredmethods="7"/>
-        <line num="6" count="2" type="stmt"/>
-        <line num="7" count="2" type="stmt"/>
-        <line num="8" count="2" type="stmt"/>
-        <line num="9" count="2" type="stmt"/>
-        <line num="12" count="2" type="stmt"/>
-        <line num="13" count="2" type="stmt"/>
-        <line num="14" count="2" type="stmt"/>
-        <line num="15" count="2" type="stmt"/>
-        <line num="16" count="2" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
         <line num="19" count="5" type="cond" truecount="2" falsecount="0"/>
         <line num="23" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="27" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="30" count="2" type="stmt"/>
+        <line num="27" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="30" count="3" type="stmt"/>
         <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="34" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="35" count="0" type="stmt"/>

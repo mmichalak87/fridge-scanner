@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`SubstitutionBadge should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFF3E0",
+      "borderLeftColor": "#FF9800",
+      "borderLeftWidth": 4,
+      "borderRadius": 12,
+      "marginTop": 12,
+      "padding": 12,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "marginBottom": 6,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#FF9800",
+          "fontSize": 16,
+          "marginRight": 6,
+        }
+      }
+    >
+      *
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#E65100",
+          "fontSize": 14,
+          "fontWeight": "600",
+        }
+      }
+    >
+      Substitution Tip
+    </Text>
+  </View>
+  <Text
+    style={
+      {
+        "color": "#5D4037",
+        "fontSize": 14,
+        "lineHeight": 20,
+      }
+    }
+  >
+    You can substitute
+     
+    <Text
+      style={
+        {
+          "color": "#E65100",
+          "fontWeight": "700",
+        }
+      }
+    >
+      Heavy Cream
+    </Text>
+     
+    with
+     
+    <Text
+      style={
+        {
+          "color": "#E65100",
+          "fontWeight": "700",
+        }
+      }
+    >
+      Milk + Butter
+    </Text>
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#795548",
+        "fontSize": 13,
+        "fontStyle": "italic",
+        "marginTop": 6,
+      }
+    }
+  >
+    Mix 1 cup milk with 2 tbsp melted butter for similar richness
+  </Text>
+</View>
+`;

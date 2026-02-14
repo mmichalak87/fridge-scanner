@@ -1,2 +1,5 @@
-echo "🔍 Checking TypeScript files..."
+echo "✨ Auto-fixing code with Prettier..."
+npx lint-staged
+
+echo "🔍 Checking TypeScript types..."
 npm run lint
