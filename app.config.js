@@ -1,5 +1,3 @@
-const sentryProject = process.env.SENTRY_PROJECT || 'cookview-apple-ios';
-
 export default {
   expo: {
     name: 'CookVision',
@@ -25,6 +23,7 @@ export default {
       },
     },
     android: {
+      package: 'com.forcetech.fridgescanner',
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#4CAF50',
@@ -51,13 +50,8 @@ export default {
           photosPermission: 'Allow CookVision to access your photos',
         },
       ],
-      [
-        '@sentry/react-native/expo',
-        {
-          organization: 'cookview-apple-ios',
-          project: sentryProject,
-        },
-      ],
+      '@react-native-firebase/app',
+      '@react-native-firebase/crashlytics',
     ],
   },
 };
