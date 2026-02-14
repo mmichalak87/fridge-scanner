@@ -5,44 +5,43 @@ import { I18nextProvider } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import i18n, { loadSavedLanguage } from '../src/locales/i18n';
 import { initRevenueCat } from '../src/services/subscription';
+import { logger } from '../src/utils/errorLogger';
 
 function RootLayout() {
   useEffect(() => {
+    logger.log('App starting...');
     loadSavedLanguage();
     initRevenueCat();
 
-    // Initialize Firebase and Crashlytics (optional - won't crash if fails)
-    const initializeFirebase = async () => {
-      try {
-        // Try to initialize Firebase - if it fails, app continues
-        const firebaseModule = await import('@react-native-firebase/app');
-        const crashlyticsModule = await import('@react-native-firebase/crashlytics');
+    // Firebase is currently disabled in app.config.js for TestFlight testing
+    // Uncomment the code below when Firebase is re-enabled in app.config.js
 
-        const firebase = firebaseModule.default;
-        const crashlytics = crashlyticsModule.default;
+    // const initializeFirebase = async () => {
+    //   try {
+    //     logger.log('Initializing Firebase...');
+    //     const firebaseModule = await import('@react-native-firebase/app');
+    //     const crashlyticsModule = await import('@react-native-firebase/crashlytics');
+    //
+    //     const firebase = firebaseModule.default;
+    //     const crashlytics = crashlyticsModule.default;
+    //
+    //     if (firebase && firebase.apps && firebase.apps.length > 0) {
+    //       logger.log('Firebase initialized', firebase.app().name);
+    //       await crashlytics().setCrashlyticsCollectionEnabled(true);
+    //       logger.log('Crashlytics enabled');
+    //       await crashlytics().setUserId('user-' + Date.now());
+    //       crashlytics().log('App started successfully');
+    //     } else {
+    //       logger.warn('Firebase not initialized - continuing without it');
+    //     }
+    //   } catch (error) {
+    //     logger.error('Firebase/Crashlytics not available', error);
+    //   }
+    // };
+    //
+    // initializeFirebase();
 
-        // Check if Firebase is properly initialized
-        if (firebase && firebase.apps && firebase.apps.length > 0) {
-          console.log('✅ Firebase initialized:', firebase.app().name);
-
-          // Enable Crashlytics
-          await crashlytics().setCrashlyticsCollectionEnabled(true);
-          console.log('✅ Crashlytics enabled');
-
-          // Set user identifier
-          await crashlytics().setUserId('user-' + Date.now());
-          crashlytics().log('App started successfully');
-        } else {
-          console.log('⚠️ Firebase not initialized - continuing without it');
-        }
-      } catch (error) {
-        console.log('⚠️ Firebase/Crashlytics not available:', error);
-        // App continues normally without Firebase
-      }
-    };
-
-    // Initialize Firebase in background (non-blocking)
-    initializeFirebase();
+    logger.log('App started successfully (Firebase disabled)');
   }, []);
 
   return (
@@ -109,6 +108,12 @@ function RootLayout() {
             options={{
               title: 'Pro',
               presentation: 'modal',
+            }}
+          />
+          <Stack.Screen
+            name="debug-logs"
+            options={{
+              title: 'Debug Logs',
             }}
           />
         </Stack>

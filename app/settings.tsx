@@ -96,56 +96,70 @@ export default function SettingsScreen() {
         </View>
       </View>
 
-      {/* Debug Section - Only in development */}
-      {__DEV__ && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🐛 DEBUG</Text>
-          <View style={styles.debugCard}>
-            <TouchableOpacity
-              style={styles.debugButton}
-              onPress={async () => {
-                try {
-                  // Dynamic import to avoid crashes
-                  const crashlytics = (await import('@react-native-firebase/crashlytics')).default;
+      {/* Debug Section - Always visible for TestFlight debugging */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>🐛 DEBUG</Text>
+        <View style={styles.debugCard}>
+          <TouchableOpacity
+            style={[styles.debugButton, { backgroundColor: '#4CAF50' }]}
+            onPress={() => router.push('/debug-logs')}
+          >
+            <Ionicons name="list" size={18} color="#fff" />
+            <Text style={styles.debugButtonText}>View Debug Logs</Text>
+          </TouchableOpacity>
+          <Text style={styles.debugInfo}>
+            View all app errors and logs for TestFlight debugging
+          </Text>
 
-                  // Log test event
-                  crashlytics().log('Test crash button pressed');
+          {__DEV__ && (
+            <>
+              <TouchableOpacity
+                style={[styles.debugButton, { marginTop: 12 }]}
+                onPress={async () => {
+                  try {
+                    // Dynamic import to avoid crashes
+                    const crashlytics = (await import('@react-native-firebase/crashlytics'))
+                      .default;
 
-                  // Record error (non-fatal)
-                  crashlytics().recordError(new Error('Test non-fatal error'));
+                    // Log test event
+                    crashlytics().log('Test crash button pressed');
 
-                  Alert.alert(
-                    'Test Crash',
-                    'Force crash in 2 seconds?\n\nNote: The app will restart and crash will appear in Firebase Console after 5-10 minutes.',
-                    [
-                      { text: 'Cancel', style: 'cancel' },
-                      {
-                        text: 'Crash Now',
-                        style: 'destructive',
-                        onPress: async () => {
-                          const crashlytics = (await import('@react-native-firebase/crashlytics'))
-                            .default;
-                          setTimeout(() => {
-                            crashlytics().crash();
-                          }, 2000);
+                    // Record error (non-fatal)
+                    crashlytics().recordError(new Error('Test non-fatal error'));
+
+                    Alert.alert(
+                      'Test Crash',
+                      'Force crash in 2 seconds?\n\nNote: The app will restart and crash will appear in Firebase Console after 5-10 minutes.',
+                      [
+                        { text: 'Cancel', style: 'cancel' },
+                        {
+                          text: 'Crash Now',
+                          style: 'destructive',
+                          onPress: async () => {
+                            const crashlytics = (await import('@react-native-firebase/crashlytics'))
+                              .default;
+                            setTimeout(() => {
+                              crashlytics().crash();
+                            }, 2000);
+                          },
                         },
-                      },
-                    ]
-                  );
-                } catch (error) {
-                  Alert.alert('Firebase Error', String(error));
-                }
-              }}
-            >
-              <Ionicons name="bug" size={18} color="#fff" />
-              <Text style={styles.debugButtonText}>Test Crashlytics</Text>
-            </TouchableOpacity>
-            <Text style={styles.debugInfo}>
-              Crashes appear in Firebase Console after 5-10 minutes
-            </Text>
-          </View>
+                      ]
+                    );
+                  } catch (error) {
+                    Alert.alert('Firebase Error', String(error));
+                  }
+                }}
+              >
+                <Ionicons name="bug" size={18} color="#fff" />
+                <Text style={styles.debugButtonText}>Test Crashlytics</Text>
+              </TouchableOpacity>
+              <Text style={styles.debugInfo}>
+                Crashes appear in Firebase Console after 5-10 minutes
+              </Text>
+            </>
+          )}
         </View>
-      )}
+      </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('settings.about')}</Text>
