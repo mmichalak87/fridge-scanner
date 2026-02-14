@@ -19,7 +19,8 @@ export default {
       googleServicesFile: './GoogleService-Info.plist',
       infoPlist: {
         NSCameraUsageDescription: 'This app needs camera access to scan your fridge contents',
-        NSPhotoLibraryUsageDescription: 'This app needs photo library access to select fridge photos',
+        NSPhotoLibraryUsageDescription:
+          'This app needs photo library access to select fridge photos',
         ITSAppUsesNonExemptEncryption: false,
       },
     },
@@ -50,6 +51,14 @@ export default {
         'expo-image-picker',
         {
           photosPermission: 'Allow CookVision to access your photos',
+        },
+      ],
+      [
+        'expo-build-properties',
+        {
+          ios: {
+            useFrameworks: 'static',
+          },
         },
       ],
       '@react-native-firebase/app',

@@ -141,36 +141,6 @@ jobs:
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/CookVision/Info.plist
           echo "Set iOS version to $VERSION ($BUILD_NUMBER)"
 
-      - name: Fix Firebase Podfile configuration
-        run: |
-          cd ios
-
-          # Verify Podfile exists
-          if [ ! -f "Podfile" ]; then
-            echo "❌ Error: Podfile not found!"
-            exit 1
-          fi
-
-          # Add Firebase modular headers fix using Ruby
-          ruby -i -pe '
-            if $_ =~ /react_native_post_install\(/
-              print "    # Fix for Firebase Swift pods requiring modular headers\n"
-              print "    installer.pods_project.targets.each do |target|\n"
-              print "      if [\"GoogleUtilities\", \"GoogleDataTransport\", \"nanopb\", \"FirebaseCore\", \"FirebaseCoreInternal\"].include?(target.name)\n"
-              print "        target.build_configurations.each do |config|\n"
-              print "          config.build_settings[\"DEFINES_MODULE\"] = \"YES\"\n"
-              print "        end\n"
-              print "      end\n"
-              print "    end\n"
-              print "\n"
-            end
-          ' Podfile
-
-          echo "✅ Podfile updated with Firebase fix"
-          echo ""
-          echo "--- Last 60 lines of Podfile ---"
-          tail -60 Podfile
-
       - name: Setup Ruby & CocoaPods
         uses: ruby/setup-ruby@v1
         with:
