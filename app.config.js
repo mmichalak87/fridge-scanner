@@ -53,6 +53,14 @@ export default {
           photosPermission: 'Allow CookVision to access your photos',
         },
       ],
+      [
+        'expo-build-properties',
+        {
+          ios: {
+            useModularHeaders: true,
+          },
+        },
+      ],
       '@react-native-firebase/app',
       '@react-native-firebase/crashlytics',
     ],
