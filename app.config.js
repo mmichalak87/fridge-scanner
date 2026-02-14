@@ -53,8 +53,8 @@ export default {
           photosPermission: 'Allow CookVision to access your photos',
         },
       ],
-      '@react-native-firebase/app',
-      '@react-native-firebase/crashlytics',
+      // '@react-native-firebase/app', // Disabled for testing
+      // '@react-native-firebase/crashlytics', // Disabled for testing
     ],
   },
 };
