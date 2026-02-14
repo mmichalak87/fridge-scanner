@@ -3,40 +3,46 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { I18nextProvider } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import firebase from '@react-native-firebase/app';
-import crashlytics from '@react-native-firebase/crashlytics';
 import i18n, { loadSavedLanguage } from '../src/locales/i18n';
 import { initRevenueCat } from '../src/services/subscription';
 
 function RootLayout() {
   useEffect(() => {
-    // Initialize Firebase and Crashlytics
+    loadSavedLanguage();
+    initRevenueCat();
+
+    // Initialize Firebase and Crashlytics (optional - won't crash if fails)
     const initializeFirebase = async () => {
       try {
-        // Check if Firebase is initialized
-        if (!firebase.apps.length) {
-          console.log('⚠️ Firebase not initialized - check google-services files');
-        } else {
+        // Try to initialize Firebase - if it fails, app continues
+        const firebaseModule = await import('@react-native-firebase/app');
+        const crashlyticsModule = await import('@react-native-firebase/crashlytics');
+
+        const firebase = firebaseModule.default;
+        const crashlytics = crashlyticsModule.default;
+
+        // Check if Firebase is properly initialized
+        if (firebase && firebase.apps && firebase.apps.length > 0) {
           console.log('✅ Firebase initialized:', firebase.app().name);
+
+          // Enable Crashlytics
+          await crashlytics().setCrashlyticsCollectionEnabled(true);
+          console.log('✅ Crashlytics enabled');
+
+          // Set user identifier
+          await crashlytics().setUserId('user-' + Date.now());
+          crashlytics().log('App started successfully');
+        } else {
+          console.log('⚠️ Firebase not initialized - continuing without it');
         }
-
-        // Enable Crashlytics
-        await crashlytics().setCrashlyticsCollectionEnabled(true);
-        console.log('✅ Crashlytics enabled');
-
-        // Set user identifier for crash reports
-        await crashlytics().setUserId('user-' + Date.now());
-
-        // Log a test event
-        crashlytics().log('App started successfully');
       } catch (error) {
-        console.error('❌ Firebase initialization error:', error);
+        console.log('⚠️ Firebase/Crashlytics not available:', error);
+        // App continues normally without Firebase
       }
     };
 
+    // Initialize Firebase in background (non-blocking)
     initializeFirebase();
-    loadSavedLanguage();
-    initRevenueCat();
   }, []);
 
   return (

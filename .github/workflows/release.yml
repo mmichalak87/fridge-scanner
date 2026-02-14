@@ -166,8 +166,28 @@ jobs:
         run: |
           echo -n "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode > GoogleService-Info.plist
 
+          # Verify file was created
+          if [ -f GoogleService-Info.plist ]; then
+            echo "✅ GoogleService-Info.plist created"
+            echo "File size: $(wc -c < GoogleService-Info.plist) bytes"
+          else
+            echo "❌ GoogleService-Info.plist NOT found!"
+            exit 1
+          fi
+
       - name: Generate native iOS project
         run: npx expo prebuild --platform ios --clean
+
+      - name: Verify Firebase config in iOS project
+        run: |
+          if [ -f ios/CookVision/GoogleService-Info.plist ]; then
+            echo "✅ GoogleService-Info.plist copied to iOS project"
+          else
+            echo "❌ GoogleService-Info.plist NOT found in iOS project!"
+            echo "Checking root directory:"
+            ls -la GoogleService-Info.plist || echo "Not in root"
+            exit 1
+          fi
 
       - name: Add modular headers to Podfile for Firebase
         run: |

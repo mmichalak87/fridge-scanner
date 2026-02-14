@@ -6,7 +6,6 @@ import { LANGUAGES, saveLanguage } from '../src/locales/i18n';
 import { useSubscription } from '../src/hooks/useSubscription';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-import crashlytics from '@react-native-firebase/crashlytics';
 
 export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
@@ -106,6 +105,9 @@ export default function SettingsScreen() {
               style={styles.debugButton}
               onPress={async () => {
                 try {
+                  // Dynamic import to avoid crashes
+                  const crashlytics = (await import('@react-native-firebase/crashlytics')).default;
+
                   // Log test event
                   crashlytics().log('Test crash button pressed');
 
@@ -120,7 +122,9 @@ export default function SettingsScreen() {
                       {
                         text: 'Crash Now',
                         style: 'destructive',
-                        onPress: () => {
+                        onPress: async () => {
+                          const crashlytics = (await import('@react-native-firebase/crashlytics'))
+                            .default;
                           setTimeout(() => {
                             crashlytics().crash();
                           }, 2000);
@@ -129,7 +133,7 @@ export default function SettingsScreen() {
                     ]
                   );
                 } catch (error) {
-                  Alert.alert('Error', String(error));
+                  Alert.alert('Firebase Error', String(error));
                 }
               }}
             >
