@@ -67,6 +67,14 @@ jobs:
             fs.writeFileSync('app.config.js', content);
           "
 
+          # Update package.json
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = '$VERSION';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
       - name: Commit and push version
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -76,7 +84,7 @@ jobs:
           git fetch origin main
           git checkout main
 
-          # Re-apply version update
+          # Re-apply version update to both files
           node -e "
             const fs = require('fs');
             let content = fs.readFileSync('app.config.js', 'utf8');
@@ -84,7 +92,14 @@ jobs:
             fs.writeFileSync('app.config.js', content);
           "
 
-          git add app.config.js
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = '$VERSION';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+          git add app.config.js package.json
           git diff --staged --quiet || git commit -m "chore: bump version to $VERSION [skip ci]"
           git push origin main
 
