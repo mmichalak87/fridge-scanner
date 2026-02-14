@@ -1,10 +1,12 @@
-name: Test, Build Android & Deploy to Google Play
+name: Test, Build Android & Deploy to Google Play (DEPRECATED - use release.yml)
 
 on:
-  release:
-    types: [published]
-
   workflow_dispatch:
+    inputs:
+      force_run:
+        description: 'Force run (type: force)'
+        required: true
+        default: 'disabled'
 
 concurrency:
   group: android-build
@@ -15,6 +17,7 @@ env:
 
 jobs:
   test:
+    if: github.event.inputs.force_run == 'force'
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +40,7 @@ jobs:
         run: npm test --if-present
 
   build-and-submit:
-    if: false  # Disabled - remove this line to re-enable
+    if: github.event.inputs.force_run == 'force'
     name: Build Android & Submit to Google Play
     needs: test
     runs-on: ubuntu-latest

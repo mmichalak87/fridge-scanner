@@ -1,10 +1,12 @@
-name: Test, Build iOS & Deploy to TestFlight
+name: Test, Build iOS & Deploy to TestFlight (DEPRECATED - use release.yml)
 
 on:
-  release:
-    types: [published]
-
   workflow_dispatch:
+    inputs:
+      force_run:
+        description: 'Force run (type: force)'
+        required: true
+        default: 'disabled'
 
 concurrency:
   group: ios-build
@@ -15,6 +17,7 @@ env:
 
 jobs:
   test:
+    if: github.event.inputs.force_run == 'force'
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
@@ -37,6 +40,7 @@ jobs:
         run: npm test --if-present
 
   build-and-submit:
+    if: github.event.inputs.force_run == 'force'
     name: Build iOS & Submit to TestFlight
     needs: test
     runs-on: macos-26
