@@ -15,7 +15,6 @@ env:
 
 jobs:
   test:
-    if: false  # Disabled - remove this line to re-enable
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
