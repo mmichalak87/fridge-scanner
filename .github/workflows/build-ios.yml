@@ -84,6 +84,15 @@ jobs:
             fs.writeFileSync('app.config.js', content);
           "
 
+      - name: Commit version update
+        if: github.event_name == 'release'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add app.config.js
+          git diff --staged --quiet || git commit -m "chore: bump version to $VERSION [skip ci]"
+          git push
+
       - name: Setup Firebase config
         env:
           GOOGLE_SERVICE_INFO_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
