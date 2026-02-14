@@ -169,17 +169,6 @@ jobs:
       - name: Generate native iOS project
         run: npx expo prebuild --platform ios --clean
 
-      - name: Add modular headers to Podfile
-        run: |
-          # Add use_modular_headers! after platform :ios line in Podfile
-          sed -i '' "/platform :ios/a\\
-          use_modular_headers!
-          " ios/Podfile
-
-          echo "✅ Added use_modular_headers! to Podfile"
-          echo "Updated Podfile content:"
-          head -10 ios/Podfile
-
       - name: Update iOS version and build number
         run: |
           /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" ios/CookVision/Info.plist
@@ -192,10 +181,50 @@ jobs:
           ruby-version: "3.2"
           bundler-cache: true
 
+      - name: Install xcodeproj gem
+        run: gem install xcodeproj
+
       - name: Install CocoaPods
         run: |
           cd ios
           pod install
+
+      - name: Configure code signing (Pods=Auto, App=Manual)
+        run: |
+          ruby -e "
+          require 'xcodeproj'
+
+          # Configure Pods for automatic signing
+          pods_project = Xcodeproj::Project.open('ios/Pods/Pods.xcodeproj')
+          pods_project.targets.each do |target|
+            target.build_configurations.each do |config|
+              config.build_settings['CODE_SIGN_IDENTITY'] = ''
+              config.build_settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'] = ''
+            end
+          end
+          pods_project.save
+          puts '✅ Pods: Automatic code signing'
+
+          # Configure main app for manual signing
+          app_project = Xcodeproj::Project.open('ios/CookVision.xcodeproj')
+          app_project.targets.each do |target|
+            if target.name == 'CookVision'
+              target.build_configurations.each do |config|
+                if config.name == 'Release'
+                  config.build_settings['CODE_SIGN_STYLE'] = 'Manual'
+                  config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = ENV['PROV_PROFILE']
+                  config.build_settings['CODE_SIGN_IDENTITY'] = 'Apple Distribution'
+                  config.build_settings['DEVELOPMENT_TEAM'] = ENV['TEAM_ID']
+                end
+              end
+            end
+          end
+          app_project.save
+          puts '✅ App: Manual code signing'
+          "
+        env:
+          PROV_PROFILE: ${{ secrets.PROVISIONING_PROFILE_NAME }}
+          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Install Apple certificate and provisioning profile
         env:
@@ -230,11 +259,7 @@ jobs:
             -sdk iphoneos \
             -destination generic/platform=iOS \
             -archivePath "$ARCHIVE_PATH" \
-            archive \
-            CODE_SIGN_STYLE=Manual \
-            PROVISIONING_PROFILE_SPECIFIER="${{ secrets.PROVISIONING_PROFILE_NAME }}" \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}"
+            archive
 
       - name: Create ExportOptions.plist
         run: |

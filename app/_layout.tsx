@@ -3,17 +3,40 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { I18nextProvider } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import firebase from '@react-native-firebase/app';
 import crashlytics from '@react-native-firebase/crashlytics';
 import i18n, { loadSavedLanguage } from '../src/locales/i18n';
 import { initRevenueCat } from '../src/services/subscription';
 
 function RootLayout() {
   useEffect(() => {
+    // Initialize Firebase and Crashlytics
+    const initializeFirebase = async () => {
+      try {
+        // Check if Firebase is initialized
+        if (!firebase.apps.length) {
+          console.log('⚠️ Firebase not initialized - check google-services files');
+        } else {
+          console.log('✅ Firebase initialized:', firebase.app().name);
+        }
+
+        // Enable Crashlytics
+        await crashlytics().setCrashlyticsCollectionEnabled(true);
+        console.log('✅ Crashlytics enabled');
+
+        // Set user identifier for crash reports
+        await crashlytics().setUserId('user-' + Date.now());
+
+        // Log a test event
+        crashlytics().log('App started successfully');
+      } catch (error) {
+        console.error('❌ Firebase initialization error:', error);
+      }
+    };
+
+    initializeFirebase();
     loadSavedLanguage();
     initRevenueCat();
-
-    // Enable Crashlytics crash collection
-    crashlytics().setCrashlyticsCollectionEnabled(true);
   }, []);
 
   return (

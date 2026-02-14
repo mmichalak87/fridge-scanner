@@ -6,6 +6,7 @@ import { LANGUAGES, saveLanguage } from '../src/locales/i18n';
 import { useSubscription } from '../src/hooks/useSubscription';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
@@ -47,10 +48,7 @@ export default function SettingsScreen() {
             </Text>
           </View>
           {!isPro && (
-            <TouchableOpacity
-              style={styles.upgradeButton}
-              onPress={() => router.push('/paywall')}
-            >
+            <TouchableOpacity style={styles.upgradeButton} onPress={() => router.push('/paywall')}>
               <Ionicons name="diamond" size={18} color="#fff" />
               <Text style={styles.upgradeButtonText}>{t('subscription.upgrade')}</Text>
             </TouchableOpacity>
@@ -59,7 +57,10 @@ export default function SettingsScreen() {
             style={styles.restoreButton}
             onPress={async () => {
               const success = await restore();
-              Alert.alert('', success ? t('subscription.restoreSuccess') : t('subscription.restoreFailed'));
+              Alert.alert(
+                '',
+                success ? t('subscription.restoreSuccess') : t('subscription.restoreFailed')
+              );
             }}
           >
             <Text style={styles.restoreButtonText}>{t('subscription.restore')}</Text>
@@ -70,7 +71,7 @@ export default function SettingsScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('settings.language')}</Text>
         <View style={styles.languageList}>
-          {LANGUAGES.map((lang) => (
+          {LANGUAGES.map(lang => (
             <TouchableOpacity
               key={lang.code}
               style={[
@@ -90,22 +91,66 @@ export default function SettingsScreen() {
                 </Text>
                 <Text style={styles.languageNameEn}>{lang.name}</Text>
               </View>
-              {i18n.language === lang.code && (
-                <Text style={styles.checkmark}>+</Text>
-              )}
+              {i18n.language === lang.code && <Text style={styles.checkmark}>+</Text>}
             </TouchableOpacity>
           ))}
         </View>
       </View>
 
+      {/* Debug Section - Only in development */}
+      {__DEV__ && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>🐛 DEBUG</Text>
+          <View style={styles.debugCard}>
+            <TouchableOpacity
+              style={styles.debugButton}
+              onPress={async () => {
+                try {
+                  // Log test event
+                  crashlytics().log('Test crash button pressed');
+
+                  // Record error (non-fatal)
+                  crashlytics().recordError(new Error('Test non-fatal error'));
+
+                  Alert.alert(
+                    'Test Crash',
+                    'Force crash in 2 seconds?\n\nNote: The app will restart and crash will appear in Firebase Console after 5-10 minutes.',
+                    [
+                      { text: 'Cancel', style: 'cancel' },
+                      {
+                        text: 'Crash Now',
+                        style: 'destructive',
+                        onPress: () => {
+                          setTimeout(() => {
+                            crashlytics().crash();
+                          }, 2000);
+                        },
+                      },
+                    ]
+                  );
+                } catch (error) {
+                  Alert.alert('Error', String(error));
+                }
+              }}
+            >
+              <Ionicons name="bug" size={18} color="#fff" />
+              <Text style={styles.debugButtonText}>Test Crashlytics</Text>
+            </TouchableOpacity>
+            <Text style={styles.debugInfo}>
+              Crashes appear in Firebase Console after 5-10 minutes
+            </Text>
+          </View>
+        </View>
+      )}
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('settings.about')}</Text>
         <View style={styles.aboutCard}>
           <Text style={styles.appName}>{t('settings.appName')}</Text>
-          <Text style={styles.appVersion}>{t('settings.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}</Text>
-          <Text style={styles.appDescription}>
-            {t('settings.appDescription')}
+          <Text style={styles.appVersion}>
+            {t('settings.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}
           </Text>
+          <Text style={styles.appDescription}>{t('settings.appDescription')}</Text>
           <Text style={styles.poweredBy}>{t('settings.poweredBy')}</Text>
         </View>
       </View>
@@ -259,5 +304,33 @@ const styles = StyleSheet.create({
   poweredBy: {
     fontSize: 12,
     color: '#999',
+  },
+  debugCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 2,
+    borderColor: '#FF6B6B',
+  },
+  debugButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FF6B6B',
+    paddingVertical: 14,
+    borderRadius: 12,
+    gap: 8,
+    marginBottom: 12,
+  },
+  debugButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  debugInfo: {
+    fontSize: 12,
+    color: '#888',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });
