@@ -151,26 +151,20 @@ jobs:
             exit 1
           fi
 
-          # Add Firebase modular headers fix to Podfile using Perl
-          # This handles both cases: existing post_install or creating new one
-          perl -i -pe 'BEGIN {
-            $fix = qq{
-                # Fix for Firebase Swift pods requiring modular headers
-                installer.pods_project.targets.each do |target|
-                  if ['"'"'GoogleUtilities'"'"', '"'"'GoogleDataTransport'"'"', '"'"'nanopb'"'"', '"'"'FirebaseCore'"'"', '"'"'FirebaseCoreInternal'"'"'].include?(target.name)
-                    target.build_configurations.each do |config|
-                      config.build_settings['"'"'DEFINES_MODULE'"'"'] = '"'"'YES'"'"'
-                    end
-                  end
-                end};
-          }
-          if (/post_install do \|installer\|/) {
-            # Insert after existing post_install
-            $_ .= $fix;
-          } elsif (eof) {
-            # No post_install found, add it at the end
-            $_ .= qq{\npost_install do |installer|$fix\nend\n};
-          }' Podfile
+          # Add Firebase modular headers fix using Ruby
+          ruby -i -pe '
+            if $_ =~ /react_native_post_install\(/
+              print "    # Fix for Firebase Swift pods requiring modular headers\n"
+              print "    installer.pods_project.targets.each do |target|\n"
+              print "      if [\"GoogleUtilities\", \"GoogleDataTransport\", \"nanopb\", \"FirebaseCore\", \"FirebaseCoreInternal\"].include?(target.name)\n"
+              print "        target.build_configurations.each do |config|\n"
+              print "          config.build_settings[\"DEFINES_MODULE\"] = \"YES\"\n"
+              print "        end\n"
+              print "      end\n"
+              print "    end\n"
+              print "\n"
+            end
+          ' Podfile
 
           echo "✅ Podfile updated with Firebase fix"
           echo ""
