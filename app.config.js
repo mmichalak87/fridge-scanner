@@ -2,7 +2,7 @@ export default {
   expo: {
     name: 'CookVision',
     slug: 'fridge',
-    version: '1.2.18',
+    version: '1.2.19',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
