@@ -254,12 +254,19 @@ jobs:
           mkdir -p ~/.private_keys
           echo -n "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode -o ~/.private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8
 
-          xcrun altool --upload-app \
+          OUTPUT=$(xcrun altool --upload-app \
             --type ios \
             --file "$IPA_PATH/CookVision.ipa" \
             --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
             --apiIssuer "$APP_STORE_CONNECT_API_ISSUER_ID" \
-            --show-progress
+            --show-progress 2>&1) || true
+
+          echo "$OUTPUT"
+
+          if echo "$OUTPUT" | grep -q "UPLOAD FAILED"; then
+            echo "::error::Upload to TestFlight failed"
+            exit 1
+          fi
 
       - name: Clean up keychain
         if: always()
