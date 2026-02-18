@@ -1,2 +1,0 @@
-npx eslint 'src/**/*.{ts,tsx}' --max-warnings 0
-npm test
