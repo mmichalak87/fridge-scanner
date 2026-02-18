@@ -6,7 +6,6 @@ import {
   getRecentScanById,
   saveFavoriteRecipe,
   removeFavoriteRecipe,
-  getFavoriteRecipes,
   isRecipeFavorite,
   getFavoritesCount,
 } from '../storage';
@@ -94,8 +93,22 @@ describe('Storage Service', () => {
 
     it('should delete a recent scan by id', async () => {
       const mockScans = [
-        { id: '1', imageBase64: 'img1', products: [], completeRecipes: [], needMoreRecipes: [], timestamp: Date.now() },
-        { id: '2', imageBase64: 'img2', products: [], completeRecipes: [], needMoreRecipes: [], timestamp: Date.now() },
+        {
+          id: '1',
+          imageBase64: 'img1',
+          products: [],
+          completeRecipes: [],
+          needMoreRecipes: [],
+          timestamp: Date.now(),
+        },
+        {
+          id: '2',
+          imageBase64: 'img2',
+          products: [],
+          completeRecipes: [],
+          needMoreRecipes: [],
+          timestamp: Date.now(),
+        },
       ];
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify(mockScans));
@@ -154,10 +167,12 @@ describe('Storage Service', () => {
     });
 
     it('should not save duplicate favorite', async () => {
-      const existingFavorites = [{
-        ...mockRecipe,
-        savedAt: Date.now(),
-      }];
+      const existingFavorites = [
+        {
+          ...mockRecipe,
+          savedAt: Date.now(),
+        },
+      ];
 
       (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify(existingFavorites));
 

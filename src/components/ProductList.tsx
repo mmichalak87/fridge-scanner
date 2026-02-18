@@ -1,73 +1,23 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Product } from '../types';
 
 interface ProductListProps {
   products: Product[];
 }
 
-const getProductIcon = (productName: string): { icon: string; library: 'ionicons' | 'material' } => {
-  const name = productName.toLowerCase();
-
-  // Dairy
-  if (name.includes('milk') || name.includes('mleko')) return { icon: 'water', library: 'material' };
-  if (name.includes('cheese') || name.includes('ser')) return { icon: 'cheese', library: 'material' };
-  if (name.includes('cream') || name.includes('śmietan') || name.includes('smietan')) return { icon: 'cupcake', library: 'material' };
-  if (name.includes('butter') || name.includes('masło') || name.includes('maslo')) return { icon: 'cube-outline', library: 'material' };
-  if (name.includes('yogurt') || name.includes('jogurt')) return { icon: 'cup', library: 'material' };
-  if (name.includes('egg') || name.includes('jaj')) return { icon: 'egg-outline', library: 'material' };
-
-  // Meat
-  if (name.includes('meat') || name.includes('mięs') || name.includes('mies') || name.includes('kiełbas') || name.includes('kielbas')) return { icon: 'food-steak', library: 'material' };
-  if (name.includes('chicken') || name.includes('kurczak') || name.includes('drób') || name.includes('drob')) return { icon: 'food-drumstick', library: 'material' };
-  if (name.includes('fish') || name.includes('ryb')) return { icon: 'fish', library: 'material' };
-  if (name.includes('ham') || name.includes('szynk')) return { icon: 'food-steak', library: 'material' };
-  if (name.includes('bacon') || name.includes('bekon') || name.includes('boczek')) return { icon: 'food-steak', library: 'material' };
-
-  // Vegetables
-  if (name.includes('carrot') || name.includes('marchew')) return { icon: 'carrot', library: 'material' };
-  if (name.includes('tomato') || name.includes('pomidor')) return { icon: 'food-apple', library: 'material' };
-  if (name.includes('potato') || name.includes('ziemniak') || name.includes('kluski')) return { icon: 'food', library: 'material' };
-  if (name.includes('onion') || name.includes('cebul')) return { icon: 'layers-outline', library: 'ionicons' };
-  if (name.includes('pepper') || name.includes('papryk')) return { icon: 'chili-mild', library: 'material' };
-  if (name.includes('cucumber') || name.includes('ogórek') || name.includes('ogorek')) return { icon: 'leaf', library: 'ionicons' };
-  if (name.includes('lettuce') || name.includes('sałat') || name.includes('salat')) return { icon: 'leaf', library: 'ionicons' };
-  if (name.includes('vegetable') || name.includes('warzyw')) return { icon: 'leaf', library: 'ionicons' };
-  if (name.includes('pickle') || name.includes('kiszon')) return { icon: 'beer-outline', library: 'ionicons' };
-
-  // Fruits
-  if (name.includes('apple') || name.includes('jabłk') || name.includes('jablk')) return { icon: 'food-apple', library: 'material' };
-  if (name.includes('orange') || name.includes('pomarańcz') || name.includes('pomarancz')) return { icon: 'fruit-citrus', library: 'material' };
-  if (name.includes('banana') || name.includes('banan')) return { icon: 'fruit-grapes', library: 'material' };
-  if (name.includes('plum') || name.includes('śliwk') || name.includes('sliwk')) return { icon: 'fruit-grapes', library: 'material' };
-  if (name.includes('fruit') || name.includes('owoc')) return { icon: 'fruit-cherries', library: 'material' };
-
-  // Condiments & Sauces
-  if (name.includes('mustard') || name.includes('musztard')) return { icon: 'bottle-soda-classic-outline', library: 'material' };
-  if (name.includes('ketchup')) return { icon: 'bottle-soda-classic-outline', library: 'material' };
-  if (name.includes('mayo') || name.includes('majonez')) return { icon: 'bottle-soda-classic-outline', library: 'material' };
-  if (name.includes('sauce') || name.includes('sos') || name.includes('pesto')) return { icon: 'bottle-soda-classic-outline', library: 'material' };
-  if (name.includes('horseradish') || name.includes('chrzan')) return { icon: 'bottle-soda-classic-outline', library: 'material' };
-  if (name.includes('caramel') || name.includes('kajmak')) return { icon: 'cupcake', library: 'material' };
-
-  // Bread & Bakery
-  if (name.includes('bread') || name.includes('chleb') || name.includes('bułk') || name.includes('bulk')) return { icon: 'bread-slice', library: 'material' };
-
-  // Beverages
-  if (name.includes('juice') || name.includes('sok')) return { icon: 'glass-cocktail', library: 'material' };
-  if (name.includes('water') || name.includes('wod')) return { icon: 'water', library: 'ionicons' };
-  if (name.includes('beer') || name.includes('piwo')) return { icon: 'beer', library: 'ionicons' };
-
-  // Default
-  return { icon: 'nutrition', library: 'ionicons' };
-};
-
-const getIconColor = (index: number): string => {
+const getBgColor = (index: number): string => {
   const colors = [
-    '#4CAF50', '#66BB6A', '#81C784', '#A5D6A7',
-    '#43A047', '#388E3C', '#2E7D32', '#1B5E20',
+    '#E8F5E9',
+    '#FFF3E0',
+    '#E3F2FD',
+    '#FCE4EC',
+    '#F3E5F5',
+    '#E0F7FA',
+    '#FFF8E1',
+    '#F1F8E9',
   ];
   return colors[index % colors.length];
 };
@@ -95,23 +45,16 @@ export function ProductList({ products }: ProductListProps) {
       </View>
 
       <View style={styles.grid}>
-        {products.map((item, index) => {
-          const iconInfo = getProductIcon(item.name);
-          const iconColor = getIconColor(index);
-
-          return (
-            <View key={item.id} style={styles.productItem}>
-              <View style={[styles.iconContainer, { backgroundColor: `${iconColor}15` }]}>
-                {iconInfo.library === 'ionicons' ? (
-                  <Ionicons name={iconInfo.icon as any} size={22} color={iconColor} />
-                ) : (
-                  <MaterialCommunityIcons name={iconInfo.icon as any} size={22} color={iconColor} />
-                )}
-              </View>
-              <Text style={styles.productName} numberOfLines={2}>{item.name}</Text>
+        {products.map((item, index) => (
+          <View key={item.id} style={styles.productItem}>
+            <View style={[styles.emojiContainer, { backgroundColor: getBgColor(index) }]}>
+              <Text style={styles.emoji}>{item.emoji || '🍽️'}</Text>
             </View>
-          );
-        })}
+            <Text style={styles.productName} numberOfLines={2}>
+              {item.name}
+            </Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -166,12 +109,15 @@ const styles = StyleSheet.create({
     padding: 12,
     gap: 10,
   },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+  emojiContainer: {
+    width: 42,
+    height: 42,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emoji: {
+    fontSize: 24,
   },
   productName: {
     flex: 1,

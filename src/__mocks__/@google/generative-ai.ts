@@ -2,11 +2,11 @@
 export const mockGenerateContent = jest.fn();
 
 export class GoogleGenerativeAI {
-  constructor(apiKey: string) {
+  constructor(_apiKey: string) {
     // API key is not used in mock
   }
 
-  getGenerativeModel(config: { model: string }) {
+  getGenerativeModel(_config: { model: string }) {
     return {
       generateContent: mockGenerateContent,
     };

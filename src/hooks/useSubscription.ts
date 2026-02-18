@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   checkProStatus,
   getRemainingScans,
@@ -62,7 +62,13 @@ export function useSubscription(): UseSubscriptionReturn {
   }, [refresh]);
 
   const canScan = useCallback(async () => {
-    return canScanCheck(isPro);
+    // Always fetch fresh pro status to avoid race conditions
+    const freshProStatus = await checkProStatus();
+    if (freshProStatus && !isPro) {
+      setIsPro(true);
+      setRemainingScans('unlimited');
+    }
+    return canScanCheck(freshProStatus);
   }, [isPro]);
 
   const recordScan = useCallback(async () => {
