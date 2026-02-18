@@ -1,5 +1,10 @@
 // Set API key BEFORE any imports
-process.env.EXPO_PUBLIC_GEMINI_API_KEY = 'test-api-key';
+process.env.GEMINI_API_KEY = 'test-api-key';
+
+// Mock react-native-config
+jest.mock('react-native-config', () => ({
+  GEMINI_API_KEY: 'test-api-key',
+}));
 
 // Mock i18n before importing gemini
 jest.mock('../../locales/i18n', () => ({

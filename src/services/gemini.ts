@@ -1,8 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import Config from 'react-native-config';
 import { AnalysisResult, Product, Recipe } from '../types';
 import i18n from '../locales/i18n';
 
-const API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY || '';
+const API_KEY = Config.GEMINI_API_KEY || '';
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -108,7 +109,7 @@ export async function analyzeImage(base64Image: string): Promise<AnalysisResult>
   const currentLanguage = getLanguageName(i18n.language);
   const ANALYSIS_PROMPT = getAnalysisPrompt(currentLanguage);
   if (!API_KEY) {
-    throw new Error('Gemini API key is not configured. Set EXPO_PUBLIC_GEMINI_API_KEY in your .env file.');
+    throw new Error('Gemini API key is not configured. Set GEMINI_API_KEY in your .env file.');
   }
 
   try {
