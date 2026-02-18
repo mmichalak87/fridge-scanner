@@ -35,6 +35,10 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>CookVision needs access to your photo library to select food images for scanning.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>CookVision needs access to your camera to scan food products.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
