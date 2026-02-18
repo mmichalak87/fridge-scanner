@@ -1,3 +1,4 @@
+/* eslint-env jest */
 // Set environment variables for tests
 process.env.GEMINI_API_KEY = 'test-api-key';
 
@@ -20,7 +21,9 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 
 // Mock react-native-localize
 jest.mock('react-native-localize', () => ({
-  getLocales: jest.fn(() => [{ languageCode: 'en', countryCode: 'US', languageTag: 'en-US', isRTL: false }]),
+  getLocales: jest.fn(() => [
+    { languageCode: 'en', countryCode: 'US', languageTag: 'en-US', isRTL: false },
+  ]),
   findBestLanguageTag: jest.fn(() => ({ languageTag: 'en', isRTL: false })),
   getNumberFormatSettings: jest.fn(() => ({ decimalSeparator: '.', groupingSeparator: ',' })),
   getCalendar: jest.fn(() => 'gregorian'),
@@ -72,18 +75,18 @@ jest.mock('react-native', () => ({
 // Mock @react-navigation/native-stack
 jest.mock('@react-navigation/native-stack', () => ({
   createNativeStackNavigator: jest.fn(() => ({
-    Navigator: ({children}) => children,
-    Screen: ({children}) => children,
-    Group: ({children}) => children,
+    Navigator: ({ children }) => children,
+    Screen: ({ children }) => children,
+    Group: ({ children }) => children,
   })),
 }));
 
 // Mock react-native-safe-area-context
 jest.mock('react-native-safe-area-context', () => ({
-  SafeAreaProvider: ({children}) => children,
-  SafeAreaView: ({children}) => children,
-  useSafeAreaInsets: jest.fn(() => ({top: 0, bottom: 0, left: 0, right: 0})),
-  useSafeAreaFrame: jest.fn(() => ({x: 0, y: 0, width: 375, height: 812})),
+  SafeAreaProvider: ({ children }) => children,
+  SafeAreaView: ({ children }) => children,
+  useSafeAreaInsets: jest.fn(() => ({ top: 0, bottom: 0, left: 0, right: 0 })),
+  useSafeAreaFrame: jest.fn(() => ({ x: 0, y: 0, width: 375, height: 812 })),
 }));
 
 // Mock @react-navigation/native
@@ -96,7 +99,7 @@ jest.mock('@react-navigation/native', () => ({
   })),
   useRoute: jest.fn(() => ({ params: {} })),
   useFocusEffect: jest.fn(),
-  NavigationContainer: ({children}) => children,
+  NavigationContainer: ({ children }) => children,
 }));
 
 // Mock Firebase
@@ -111,6 +114,14 @@ jest.mock('@react-native-firebase/crashlytics', () => ({
     setCrashlyticsCollectionEnabled: jest.fn(),
     recordError: jest.fn(),
     log: jest.fn(),
+  })),
+}));
+
+jest.mock('@react-native-firebase/analytics', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    setAnalyticsCollectionEnabled: jest.fn(),
+    logEvent: jest.fn(),
   })),
 }));
 

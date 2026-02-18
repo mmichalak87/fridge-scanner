@@ -1,5 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Dimensions, ActivityIndicator, Image, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Dimensions,
+  ActivityIndicator,
+  Image,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
@@ -36,6 +45,7 @@ export default function GalleryScreen() {
 
   useEffect(() => {
     loadPhotos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadPhotos = async () => {
@@ -49,12 +59,16 @@ export default function GalleryScreen() {
         assetType: 'Photos',
       });
 
-      const newPhotos = result.edges.map((edge) => ({
+      const newPhotos = result.edges.map((edge, index) => ({
         uri: edge.node.image.uri,
-        id: edge.node.image.uri,
+        id: `${edge.node.image.uri}_${photos.length + index}`,
       }));
 
-      setPhotos(prev => [...prev, ...newPhotos]);
+      setPhotos(prev => {
+        const existingUris = new Set(prev.map(p => p.uri));
+        const unique = newPhotos.filter(p => !existingUris.has(p.uri));
+        return [...prev, ...unique];
+      });
       setEndCursor(result.page_info.end_cursor);
       setHasMore(result.page_info.has_next_page);
       setHasPermission(true);
@@ -87,30 +101,36 @@ export default function GalleryScreen() {
     }
   };
 
-  const selectPhoto = async (asset: PhotoAsset) => {
-    setIsProcessing(true);
-    try {
-      const compressedBase64 = await compressImage(asset.uri);
-      if (compressedBase64) {
-        navigation.replace('Results', { imageBase64: compressedBase64 });
-      } else {
+  const selectPhoto = useCallback(
+    async (asset: PhotoAsset) => {
+      setIsProcessing(true);
+      try {
+        const compressedBase64 = await compressImage(asset.uri);
+        if (compressedBase64) {
+          navigation.replace('Results', { imageBase64: compressedBase64 });
+        } else {
+          setIsProcessing(false);
+        }
+      } catch (error) {
+        console.error('Failed to select photo:', error);
         setIsProcessing(false);
       }
-    } catch (error) {
-      console.error('Failed to select photo:', error);
-      setIsProcessing(false);
-    }
-  };
+    },
+    [navigation]
+  );
 
-  const renderPhoto = useCallback(({ item }: { item: PhotoAsset }) => (
-    <TouchableOpacity
-      style={styles.photoItem}
-      onPress={() => selectPhoto(item)}
-      activeOpacity={0.7}
-    >
-      <Image source={{ uri: item.uri }} style={styles.photo} resizeMode="cover" />
-    </TouchableOpacity>
-  ), []);
+  const renderPhoto = useCallback(
+    ({ item }: { item: PhotoAsset }) => (
+      <TouchableOpacity
+        style={styles.photoItem}
+        onPress={() => selectPhoto(item)}
+        activeOpacity={0.7}
+      >
+        <Image source={{ uri: item.uri }} style={styles.photo} resizeMode="cover" />
+      </TouchableOpacity>
+    ),
+    [selectPhoto]
+  );
 
   const renderFooter = () => {
     if (!isLoading) return null;
@@ -164,7 +184,7 @@ export default function GalleryScreen() {
         <FlatList
           data={photos}
           renderItem={renderPhoto}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           numColumns={NUM_COLUMNS}
           onEndReached={loadPhotos}
           onEndReachedThreshold={0.5}
@@ -185,13 +205,38 @@ export default function GalleryScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   safeArea: { flex: 1 },
-  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
   processingText: { marginTop: 16, fontSize: 16, color: '#666' },
-  permissionContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 40, backgroundColor: '#fff' },
-  permissionTitle: { fontSize: 18, fontWeight: '600', color: '#333', marginTop: 16, marginBottom: 24 },
+  permissionContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 40,
+    backgroundColor: '#fff',
+  },
+  permissionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginTop: 16,
+    marginBottom: 24,
+  },
   backButton: { paddingHorizontal: 32, paddingVertical: 14 },
   backButtonText: { fontSize: 16, color: '#666' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#eee' },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
   closeButton: { width: 44, height: 44, justifyContent: 'center', alignItems: 'center' },
   title: { fontSize: 18, fontWeight: '600', color: '#333' },
   placeholder: { width: 44, height: 44 },

@@ -1,13 +1,20 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { PurchasesPackage } from 'react-native-purchases';
-import { getOfferings, purchasePackage, restorePurchases, FREE_DAILY_SCANS } from '../services/subscription';
+import { getOfferings, purchasePackage, restorePurchases } from '../services/subscription';
 import { RootStackParamList } from '../navigation/types';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Paywall'>;
@@ -24,10 +31,11 @@ export default function PaywallScreen() {
     navigation.setOptions({
       title: t('subscription.upgradeTitle'),
     });
-  }, [i18n.language]);
+  }, [navigation, t, i18n.language]);
 
   useEffect(() => {
     loadOfferings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadOfferings = async () => {
@@ -93,11 +101,13 @@ export default function PaywallScreen() {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <View style={styles.proIconContainer}>
-          <Ionicons name="diamond" size={48} color="#FFD700" />
+        <View style={styles.headerContent}>
+          <View style={styles.proIconContainer}>
+            <Ionicons name="diamond" size={48} color="#FFD700" />
+          </View>
+          <Text style={styles.headerTitle}>{t('subscription.upgradeTitle')}</Text>
+          <Text style={styles.headerSubtitle}>{t('subscription.upgradeSubtitle')}</Text>
         </View>
-        <Text style={styles.headerTitle}>{t('subscription.upgradeTitle')}</Text>
-        <Text style={styles.headerSubtitle}>{t('subscription.upgradeSubtitle')}</Text>
       </LinearGradient>
 
       <View style={styles.featuresCard}>
@@ -130,7 +140,7 @@ export default function PaywallScreen() {
         <ActivityIndicator size="large" color="#4CAF50" style={styles.loader} />
       ) : (
         <View style={styles.packagesContainer}>
-          {packages.map((pkg) => (
+          {packages.map(pkg => (
             <TouchableOpacity
               key={pkg.identifier}
               style={[
@@ -140,20 +150,22 @@ export default function PaywallScreen() {
               onPress={() => setSelectedPackage(pkg)}
             >
               <View style={styles.packageInfo}>
-                <Text style={[
-                  styles.packageTitle,
-                  selectedPackage?.identifier === pkg.identifier && styles.packageTitleSelected,
-                ]}>
+                <Text
+                  style={[
+                    styles.packageTitle,
+                    selectedPackage?.identifier === pkg.identifier && styles.packageTitleSelected,
+                  ]}
+                >
                   {pkg.product.title}
                 </Text>
-                <Text style={styles.packagePrice}>
-                  {pkg.product.priceString}
-                </Text>
+                <Text style={styles.packagePrice}>{pkg.product.priceString}</Text>
               </View>
-              <View style={[
-                styles.packageRadio,
-                selectedPackage?.identifier === pkg.identifier && styles.packageRadioSelected,
-              ]} />
+              <View
+                style={[
+                  styles.packageRadio,
+                  selectedPackage?.identifier === pkg.identifier && styles.packageRadioSelected,
+                ]}
+              />
             </TouchableOpacity>
           ))}
         </View>
@@ -191,24 +203,91 @@ export default function PaywallScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
   content: { paddingBottom: 40 },
-  header: { alignItems: 'center', paddingTop: 40, paddingBottom: 40, paddingHorizontal: 24, minHeight: 220 },
-  proIconContainer: { width: 88, height: 88, borderRadius: 44, backgroundColor: 'rgba(255, 255, 255, 0.2)', justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
-  headerTitle: { fontSize: 26, fontWeight: '800', color: '#fff', textAlign: 'center', marginBottom: 8 },
+  header: { minHeight: 220 },
+  headerContent: {
+    flex: 1,
+    alignItems: 'center',
+    paddingTop: 40,
+    paddingBottom: 40,
+    paddingHorizontal: 24,
+  },
+  proIconContainer: {
+    width: 88,
+    height: 88,
+    borderRadius: 44,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
   headerSubtitle: { fontSize: 16, color: 'rgba(255, 255, 255, 0.85)', textAlign: 'center' },
-  featuresCard: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: -20, borderRadius: 20, padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 6 },
-  planBadge: { backgroundColor: '#4CAF50', alignSelf: 'flex-start', paddingHorizontal: 14, paddingVertical: 4, borderRadius: 12, marginBottom: 16 },
+  featuresCard: {
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    marginTop: -20,
+    borderRadius: 20,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  planBadge: {
+    backgroundColor: '#4CAF50',
+    alignSelf: 'flex-start',
+    paddingHorizontal: 14,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
   planBadgeText: { color: '#fff', fontWeight: '700', fontSize: 13, letterSpacing: 1 },
   featureRow: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 10 },
-  featureIconContainer: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#E8F5E9', justifyContent: 'center', alignItems: 'center' },
+  featureIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#E8F5E9',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   featureText: { fontSize: 16, color: '#333', fontWeight: '500', flex: 1 },
-  comparisonCard: { backgroundColor: '#fff', marginHorizontal: 16, marginTop: 16, borderRadius: 16, padding: 20 },
+  comparisonCard: {
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    marginTop: 16,
+    borderRadius: 16,
+    padding: 20,
+  },
   comparisonHeader: { marginBottom: 12 },
-  comparisonTitle: { fontSize: 15, fontWeight: '600', color: '#888', textTransform: 'uppercase', letterSpacing: 1 },
+  comparisonTitle: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#888',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
   comparisonRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 6 },
   comparisonText: { fontSize: 15, color: '#999' },
   loader: { marginTop: 24 },
   packagesContainer: { paddingHorizontal: 16, marginTop: 20, gap: 12 },
-  packageCard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#fff', borderRadius: 16, padding: 18, borderWidth: 2, borderColor: '#e0e0e0' },
+  packageCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 18,
+    borderWidth: 2,
+    borderColor: '#e0e0e0',
+  },
   packageCardSelected: { borderColor: '#4CAF50', backgroundColor: '#E8F5E9' },
   packageInfo: { flex: 1 },
   packageTitle: { fontSize: 16, fontWeight: '600', color: '#333', marginBottom: 4 },
@@ -216,9 +295,25 @@ const styles = StyleSheet.create({
   packagePrice: { fontSize: 20, fontWeight: '800', color: '#1a1a1a' },
   packageRadio: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: '#ccc' },
   packageRadioSelected: { borderColor: '#4CAF50', backgroundColor: '#4CAF50' },
-  purchaseButton: { marginHorizontal: 16, marginTop: 24, borderRadius: 20, overflow: 'hidden', shadowColor: '#2E7D32', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.35, shadowRadius: 12, elevation: 8 },
+  purchaseButton: {
+    marginHorizontal: 16,
+    marginTop: 24,
+    borderRadius: 20,
+    overflow: 'hidden',
+    shadowColor: '#2E7D32',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    elevation: 8,
+  },
   purchaseButtonDisabled: { opacity: 0.6 },
-  purchaseGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 64, gap: 10 },
+  purchaseGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 64,
+    gap: 10,
+  },
   purchaseText: { fontSize: 19, fontWeight: '700', color: '#fff' },
   restoreButton: { alignItems: 'center', paddingVertical: 16, marginTop: 8 },
   restoreText: { fontSize: 15, color: '#4CAF50', fontWeight: '500' },

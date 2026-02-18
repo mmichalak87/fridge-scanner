@@ -1,5 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Animated, Easing, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Animated,
+  Easing,
+  Alert,
+} from 'react-native';
 import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +21,13 @@ import { analyzeImage } from '../services/gemini';
 import { ProductList } from '../components/ProductList';
 import { RecipeCard } from '../components/RecipeCard';
 import { Product, Recipe } from '../types';
-import { saveRecentScan, saveFavoriteRecipe, removeFavoriteRecipe, getFavoriteRecipes, getRecentScanById } from '../services/storage';
+import {
+  saveRecentScan,
+  saveFavoriteRecipe,
+  removeFavoriteRecipe,
+  getFavoriteRecipes,
+  getRecentScanById,
+} from '../services/storage';
 import { useSubscription } from '../hooks/useSubscription';
 import { FREE_DAILY_SCANS } from '../services/subscription';
 import { RootStackParamList } from '../navigation/types';
@@ -38,37 +54,75 @@ function AnimatedLoader({ t }: { t: (key: string) => string }) {
   useEffect(() => {
     const pulse = Animated.loop(
       Animated.sequence([
-        Animated.timing(pulseAnim, { toValue: 1.1, duration: 1000, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
-        Animated.timing(pulseAnim, { toValue: 1, duration: 1000, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        Animated.timing(pulseAnim, {
+          toValue: 1.1,
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
       ])
     );
     pulse.start();
 
     const rotate = Animated.loop(
-      Animated.timing(rotateAnim, { toValue: 1, duration: 8000, easing: Easing.linear, useNativeDriver: true })
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 8000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
     );
     rotate.start();
 
     const stepInterval = setInterval(() => {
-      setCurrentStep((prev) => (prev < 2 ? prev + 1 : prev));
+      setCurrentStep(prev => (prev < 2 ? prev + 1 : prev));
     }, 2500);
 
-    Animated.timing(progressAnim, { toValue: 1, duration: 8000, easing: Easing.linear, useNativeDriver: false }).start();
+    Animated.timing(progressAnim, {
+      toValue: 1,
+      duration: 8000,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
 
-    return () => { pulse.stop(); rotate.stop(); clearInterval(stepInterval); };
-  }, []);
+    return () => {
+      pulse.stop();
+      rotate.stop();
+      clearInterval(stepInterval);
+    };
+  }, [progressAnim, pulseAnim, rotateAnim]);
 
   useEffect(() => {
     fadeAnims.forEach((anim, index) => {
       Animated.parallel([
-        Animated.timing(anim, { toValue: index <= currentStep ? 1 : 0.4, duration: 400, useNativeDriver: true }),
-        Animated.spring(scaleAnims[index], { toValue: index === currentStep ? 1.05 : 1, friction: 5, useNativeDriver: true }),
+        Animated.timing(anim, {
+          toValue: index <= currentStep ? 1 : 0.4,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.spring(scaleAnims[index], {
+          toValue: index === currentStep ? 1.05 : 1,
+          friction: 5,
+          useNativeDriver: true,
+        }),
       ]).start();
     });
-  }, [currentStep]);
+  }, [currentStep, fadeAnims, scaleAnims]);
 
-  const rotateInterpolate = rotateAnim.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
-  const progressWidth = progressAnim.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] });
+  const rotateInterpolate = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+  const progressWidth = progressAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0%', '100%'],
+  });
 
   const steps = [
     { key: 'loadingStep1', icon: 'cloud-upload-outline' as const },
@@ -77,8 +131,15 @@ function AnimatedLoader({ t }: { t: (key: string) => string }) {
   ];
 
   return (
-    <LinearGradient colors={['#E8F5E9', '#C8E6C9', '#A5D6A7']} style={styles.loadingContainer} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-      <Animated.View style={[styles.decorativeCircle, { transform: [{ rotate: rotateInterpolate }] }]}>
+    <LinearGradient
+      colors={['#E8F5E9', '#C8E6C9', '#A5D6A7']}
+      style={styles.loadingContainer}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
+      <Animated.View
+        style={[styles.decorativeCircle, { transform: [{ rotate: rotateInterpolate }] }]}
+      >
         <View style={styles.decorativeDot} />
         <View style={[styles.decorativeDot, styles.decorativeDot2]} />
         <View style={[styles.decorativeDot, styles.decorativeDot3]} />
@@ -86,7 +147,12 @@ function AnimatedLoader({ t }: { t: (key: string) => string }) {
 
       <View style={styles.loadingContent}>
         <Animated.View style={[styles.iconContainer, { transform: [{ scale: pulseAnim }] }]}>
-          <LinearGradient colors={['#4CAF50', '#2E7D32']} style={styles.iconGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+          <LinearGradient
+            colors={['#4CAF50', '#2E7D32']}
+            style={styles.iconGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
             <MaterialCommunityIcons name="fridge-outline" size={56} color="#fff" />
           </LinearGradient>
         </Animated.View>
@@ -101,15 +167,37 @@ function AnimatedLoader({ t }: { t: (key: string) => string }) {
 
         <View style={styles.stepsContainer}>
           {steps.map((step, index) => (
-            <Animated.View key={step.key} style={[styles.stepItem, { opacity: fadeAnims[index], transform: [{ scale: scaleAnims[index] }] }]}>
-              <View style={[styles.stepIconContainer, index < currentStep && styles.stepCompleted, index === currentStep && styles.stepActive]}>
+            <Animated.View
+              key={step.key}
+              style={[
+                styles.stepItem,
+                { opacity: fadeAnims[index], transform: [{ scale: scaleAnims[index] }] },
+              ]}
+            >
+              <View
+                style={[
+                  styles.stepIconContainer,
+                  index < currentStep && styles.stepCompleted,
+                  index === currentStep && styles.stepActive,
+                ]}
+              >
                 {index < currentStep ? (
                   <Ionicons name="checkmark" size={18} color="#fff" />
                 ) : (
-                  <Ionicons name={step.icon} size={18} color={index === currentStep ? '#fff' : '#81C784'} />
+                  <Ionicons
+                    name={step.icon}
+                    size={18}
+                    color={index === currentStep ? '#fff' : '#81C784'}
+                  />
                 )}
               </View>
-              <Text style={[styles.stepText, index === currentStep && styles.stepTextActive, index < currentStep && styles.stepTextCompleted]}>
+              <Text
+                style={[
+                  styles.stepText,
+                  index === currentStep && styles.stepTextActive,
+                  index < currentStep && styles.stepTextCompleted,
+                ]}
+              >
                 {t(`results.${step.key}`)}
               </Text>
             </Animated.View>
@@ -117,15 +205,18 @@ function AnimatedLoader({ t }: { t: (key: string) => string }) {
         </View>
 
         <View style={styles.dotsContainer}>
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2].map(i => (
             <Animated.View
               key={i}
-              style={[styles.dot, {
-                opacity: pulseAnim.interpolate({
-                  inputRange: [1, 1.1],
-                  outputRange: i === 0 ? [1, 0.3] : i === 1 ? [0.6, 1] : [0.3, 0.6],
-                }),
-              }]}
+              style={[
+                styles.dot,
+                {
+                  opacity: pulseAnim.interpolate({
+                    inputRange: [1, 1.1],
+                    outputRange: i === 0 ? [1, 0.3] : i === 1 ? [0.6, 1] : [0.3, 0.6],
+                  }),
+                },
+              ]}
             />
           ))}
         </View>
@@ -151,7 +242,7 @@ export default function ResultsScreen() {
 
   useEffect(() => {
     navigation.setOptions({ title: t('results.title') });
-  }, [i18n.language]);
+  }, [navigation, t, i18n.language]);
 
   useEffect(() => {
     if (scanId) {
@@ -161,6 +252,7 @@ export default function ResultsScreen() {
       performAnalysis();
     }
     loadFavorites();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageBase64, scanId]);
 
   const loadFavorites = async () => {
@@ -189,7 +281,15 @@ export default function ResultsScreen() {
   };
 
   const performAnalysis = async () => {
+    console.log('=== performAnalysis started ===');
+    console.log('imageBase64 length:', imageBase64?.length || 0);
+    const Config = require('react-native-config').default;
+    console.log(
+      'Config.GEMINI_API_KEY:',
+      Config.GEMINI_API_KEY ? `${Config.GEMINI_API_KEY.substring(0, 10)}...` : 'EMPTY/UNDEFINED'
+    );
     const allowed = await checkCanScan();
+    console.log('canScan:', allowed);
     if (!allowed) {
       setIsLoading(false);
       Alert.alert(
@@ -197,7 +297,13 @@ export default function ResultsScreen() {
         t('subscription.scanLimitMessage', { limit: FREE_DAILY_SCANS }),
         [
           { text: t('common.cancel'), onPress: () => navigation.goBack(), style: 'cancel' },
-          { text: t('subscription.upgrade'), onPress: () => { navigation.goBack(); navigation.navigate('Paywall'); } },
+          {
+            text: t('subscription.upgrade'),
+            onPress: () => {
+              navigation.goBack();
+              navigation.navigate('Paywall');
+            },
+          },
         ]
       );
       return;
@@ -213,9 +319,17 @@ export default function ResultsScreen() {
       setNeedMoreRecipes(result.needMoreRecipes || []);
 
       await recordScan();
-      await saveRecentScan(imageBase64!, result.products, result.completeRecipes || [], result.needMoreRecipes || [], isPro);
+      await saveRecentScan(
+        imageBase64!,
+        result.products,
+        result.completeRecipes || [],
+        result.needMoreRecipes || [],
+        isPro
+      );
     } catch (err) {
-      console.error('Analysis failed:', err);
+      console.error('=== Analysis failed ===');
+      console.error('Error:', err instanceof Error ? err.message : String(err));
+      console.error('Full error:', JSON.stringify(err, null, 2));
       setError(err instanceof Error ? err.message : t('errors.analysisFailedMessage'));
     } finally {
       setIsLoading(false);
@@ -227,7 +341,11 @@ export default function ResultsScreen() {
 
     if (isFavorite) {
       await removeFavoriteRecipe(recipe.id);
-      setFavoriteIds(prev => { const newSet = new Set(prev); newSet.delete(recipe.id); return newSet; });
+      setFavoriteIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(recipe.id);
+        return newSet;
+      });
       Alert.alert('', t('favorites.removed'));
     } else {
       const success = await saveFavoriteRecipe(recipe, isPro);
@@ -245,15 +363,22 @@ export default function ResultsScreen() {
   }
 
   if (error) {
+    const isNotFridge = error === 'NOT_FRIDGE_IMAGE';
     return (
       <SafeAreaView style={styles.errorContainer}>
         <View style={styles.errorIconContainer}>
-          <Text style={styles.errorEmoji}>{t('errors.analysisFailedEmoji')}</Text>
+          <Text style={styles.errorEmoji}>
+            {isNotFridge ? '📷' : t('errors.analysisFailedEmoji')}
+          </Text>
         </View>
-        <Text style={styles.errorTitle}>{t('errors.analysisFailedTitle')}</Text>
-        <Text style={styles.errorMessage}>{t('errors.analysisFailedMessage')}</Text>
+        <Text style={styles.errorTitle}>
+          {t(isNotFridge ? 'errors.notFridgeTitle' : 'errors.analysisFailedTitle')}
+        </Text>
+        <Text style={styles.errorMessage}>
+          {t(isNotFridge ? 'errors.notFridgeMessage' : 'errors.analysisFailedMessage')}
+        </Text>
         <View style={styles.errorActions}>
-          {!scanId && (
+          {!scanId && !isNotFridge && (
             <TouchableOpacity style={styles.retryButton} onPress={performAnalysis}>
               <Ionicons name="refresh" size={20} color="#fff" />
               <Text style={styles.retryButtonText}>{t('common.retry')}</Text>
@@ -292,8 +417,13 @@ export default function ResultsScreen() {
               <Text style={styles.sectionSubtitle}>{t('results.readyToCookSubtitle')}</Text>
             </View>
           </View>
-          {completeRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} isFavorite={favoriteIds.has(recipe.id)} onToggleFavorite={handleToggleFavorite} />
+          {completeRecipes.map(recipe => (
+            <RecipeCard
+              key={recipe.id}
+              recipe={recipe}
+              isFavorite={favoriteIds.has(recipe.id)}
+              onToggleFavorite={handleToggleFavorite}
+            />
           ))}
         </View>
       )}
@@ -309,8 +439,13 @@ export default function ResultsScreen() {
               <Text style={styles.sectionSubtitle}>{t('results.needMoreSubtitle')}</Text>
             </View>
           </View>
-          {needMoreRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} isFavorite={favoriteIds.has(recipe.id)} onToggleFavorite={handleToggleFavorite} />
+          {needMoreRecipes.map(recipe => (
+            <RecipeCard
+              key={recipe.id}
+              recipe={recipe}
+              isFavorite={favoriteIds.has(recipe.id)}
+              onToggleFavorite={handleToggleFavorite}
+            />
           ))}
         </View>
       )}
@@ -337,19 +472,60 @@ const styles = StyleSheet.create({
   content: { padding: 16, paddingBottom: 40 },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   loadingContent: { alignItems: 'center', padding: 40 },
-  decorativeCircle: { position: 'absolute', width: 300, height: 300, borderRadius: 150, borderWidth: 1, borderColor: 'rgba(76, 175, 80, 0.2)' },
-  decorativeDot: { position: 'absolute', width: 12, height: 12, borderRadius: 6, backgroundColor: 'rgba(76, 175, 80, 0.4)', top: -6, left: '50%', marginLeft: -6 },
+  decorativeCircle: {
+    position: 'absolute',
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    borderWidth: 1,
+    borderColor: 'rgba(76, 175, 80, 0.2)',
+  },
+  decorativeDot: {
+    position: 'absolute',
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: 'rgba(76, 175, 80, 0.4)',
+    top: -6,
+    left: '50%',
+    marginLeft: -6,
+  },
   decorativeDot2: { top: '50%', left: -6, marginLeft: 0, marginTop: -6 },
   decorativeDot3: { top: '50%', left: 'auto', right: -6, marginLeft: 0, marginTop: -6 },
   iconContainer: { marginBottom: 28 },
-  iconGradient: { width: 110, height: 110, borderRadius: 55, justifyContent: 'center', alignItems: 'center', shadowColor: '#2E7D32', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.35, shadowRadius: 16, elevation: 12 },
+  iconGradient: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#2E7D32',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 12,
+  },
   loadingTitle: { fontSize: 24, fontWeight: '700', color: '#1B5E20', marginBottom: 24 },
   progressContainer: { width: 200, marginBottom: 32 },
-  progressTrack: { height: 6, backgroundColor: 'rgba(255, 255, 255, 0.6)', borderRadius: 3, overflow: 'hidden' },
+  progressTrack: {
+    height: 6,
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
   progressBar: { height: '100%', backgroundColor: '#4CAF50', borderRadius: 3 },
   stepsContainer: { gap: 16, marginBottom: 24 },
   stepItem: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  stepIconContainer: { width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255, 255, 255, 0.7)', justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#81C784' },
+  stepIconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#81C784',
+  },
   stepActive: { backgroundColor: '#4CAF50', borderColor: '#4CAF50' },
   stepCompleted: { backgroundColor: '#2E7D32', borderColor: '#2E7D32' },
   stepText: { fontSize: 15, color: '#666', fontWeight: '500' },
@@ -357,13 +533,41 @@ const styles = StyleSheet.create({
   stepTextCompleted: { color: '#43A047' },
   dotsContainer: { flexDirection: 'row', gap: 8, marginTop: 8 },
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#4CAF50' },
-  errorContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 40, backgroundColor: '#f5f5f5' },
-  errorIconContainer: { marginBottom: 16, width: 100, height: 100, borderRadius: 50, backgroundColor: '#FFF3E0', justifyContent: 'center', alignItems: 'center' },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 40,
+    backgroundColor: '#f5f5f5',
+  },
+  errorIconContainer: {
+    marginBottom: 16,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#FFF3E0',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   errorEmoji: { fontSize: 48 },
   errorTitle: { fontSize: 24, fontWeight: '700', color: '#1a1a1a', marginBottom: 8 },
-  errorMessage: { fontSize: 16, color: '#666', textAlign: 'center', marginBottom: 24, lineHeight: 24 },
+  errorMessage: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 24,
+  },
   errorActions: { width: '100%', gap: 12 },
-  retryButton: { flexDirection: 'row', backgroundColor: '#4CAF50', paddingVertical: 14, borderRadius: 12, alignItems: 'center', justifyContent: 'center', gap: 8 },
+  retryButton: {
+    flexDirection: 'row',
+    backgroundColor: '#4CAF50',
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
   retryButtonText: { fontSize: 16, fontWeight: '600', color: '#fff' },
   backButton: { paddingVertical: 14, alignItems: 'center' },
   backButtonText: { fontSize: 16, color: '#666' },
@@ -371,12 +575,28 @@ const styles = StyleSheet.create({
   previewImage: { width: '100%', height: '100%' },
   recipesSection: { marginTop: 16 },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 16 },
-  sectionIconContainer: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#E8F5E9', justifyContent: 'center', alignItems: 'center' },
+  sectionIconContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#E8F5E9',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   sectionIconOrange: { backgroundColor: '#FFF3E0' },
   sectionTitle: { fontSize: 18, fontWeight: '700', color: '#1a1a1a' },
   sectionSubtitle: { fontSize: 13, color: '#666', marginTop: 2 },
   noRecipes: { backgroundColor: '#fff', borderRadius: 16, padding: 32, alignItems: 'center' },
   noRecipesText: { fontSize: 16, color: '#888' },
-  newScanButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#4CAF50', paddingVertical: 16, borderRadius: 16, marginTop: 24, gap: 10 },
+  newScanButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#4CAF50',
+    paddingVertical: 16,
+    borderRadius: 16,
+    marginTop: 24,
+    gap: 10,
+  },
   newScanText: { fontSize: 16, fontWeight: '600', color: '#fff' },
 });

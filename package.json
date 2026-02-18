@@ -67,7 +67,11 @@
     "node": ">= 22.11.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,json}": [
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --max-warnings 0",
+      "prettier --write"
+    ],
+    "*.json": [
       "prettier --write"
     ]
   },

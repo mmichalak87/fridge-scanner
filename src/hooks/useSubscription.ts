@@ -62,7 +62,13 @@ export function useSubscription(): UseSubscriptionReturn {
   }, [refresh]);
 
   const canScan = useCallback(async () => {
-    return canScanCheck(isPro);
+    // Always fetch fresh pro status to avoid race conditions
+    const freshProStatus = await checkProStatus();
+    if (freshProStatus && !isPro) {
+      setIsPro(true);
+      setRemainingScans('unlimited');
+    }
+    return canScanCheck(freshProStatus);
   }, [isPro]);
 
   const recordScan = useCallback(async () => {

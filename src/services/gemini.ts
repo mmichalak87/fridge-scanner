@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import Config from 'react-native-config';
 import { AnalysisResult, Product, Recipe } from '../types';
 import i18n from '../locales/i18n';
+import { logger } from '../utils/errorLogger';
 
 const API_KEY = Config.GEMINI_API_KEY || '';
 
@@ -17,7 +18,9 @@ const getLanguageName = (code: string): string => {
   return languages[code] || 'English';
 };
 
-const getAnalysisPrompt = (language: string) => `You are a helpful culinary assistant that analyzes fridge contents from images.
+const getAnalysisPrompt = (
+  language: string
+) => `You are a helpful culinary assistant that analyzes fridge contents from images.
 
 IMPORTANT: All product names, recipe names, ingredients, and instructions MUST be in ${language}.
 
@@ -44,12 +47,14 @@ CATEGORY 2 - "needMoreRecipes" (2 recipes):
 IMPORTANT: Respond ONLY with valid JSON in this exact format, no additional text:
 {
   "products": [
-    {"id": "1", "name": "product name", "confidence": 0.95}
+    {"id": "1", "name": "product name", "emoji": "🥛", "confidence": 0.95}
   ],
   "completeRecipes": [
     {
       "id": "1",
       "name": "Recipe Name",
+      "emoji": "🍳",
+      "imageSearchTerm": "english keyword for photo search e.g. pancakes, omelette, pasta carbonara",
       "ingredients": ["200g ingredient1", "2 tbsp ingredient2", "salt and pepper to taste"],
       "availableIngredients": ["ingredient1", "ingredient2", "salt", "pepper"],
       "missingIngredients": [],
@@ -63,6 +68,8 @@ IMPORTANT: Respond ONLY with valid JSON in this exact format, no additional text
     {
       "id": "4",
       "name": "Recipe Name",
+      "emoji": "🥘",
+      "imageSearchTerm": "english keyword for photo search",
       "ingredients": ["200g ingredient1", "100g missing ingredient"],
       "availableIngredients": ["ingredient1"],
       "missingIngredients": ["missing ingredient"],
@@ -102,12 +109,22 @@ ALTERNATIVES REQUIREMENTS:
 If no substitution is possible, set "substitution" to null.
 The "difficulty" field must be one of: "easy", "medium", "hard".
 Be thorough in identifying products - look for items on all shelves, in door compartments, and drawers.
+Each product MUST include an "emoji" field with a single emoji that best represents that specific product (e.g. 🥛 for milk, 🧀 for cheese, 🐟 for fish, 🥒 for cucumber, 🥫 for canned goods).
+Each recipe MUST include an "emoji" field with a single emoji that best represents the dish (e.g. 🍳 for omelette, 🥗 for salad, 🍝 for pasta, 🥘 for stew).
+Each recipe MUST include an "imageSearchTerm" field with a short English keyword for stock photo search (e.g. "pancakes", "chicken soup", "pasta carbonara", "greek salad"). Keep it simple, 1-3 words in English, describing the finished dish.
 
-REMEMBER: All text content (product names, recipe names, ingredients, instructions, reasons) MUST be in ${language}.`;
+REMEMBER: All text content (product names, recipe names, ingredients, instructions, reasons) MUST be in ${language}. The "imageSearchTerm" field MUST always be in English.`;
 
 export async function analyzeImage(base64Image: string): Promise<AnalysisResult> {
   const currentLanguage = getLanguageName(i18n.language);
   const ANALYSIS_PROMPT = getAnalysisPrompt(currentLanguage);
+  console.log('=== Gemini Analysis Request ===');
+  console.log('API Key present:', !!API_KEY, `(${API_KEY.substring(0, 10)}...)`);
+  console.log('Language:', currentLanguage);
+  console.log('Image size:', Math.round(base64Image.length / 1024), 'KB (base64)');
+  console.log('Prompt:', ANALYSIS_PROMPT.substring(0, 200) + '...');
+  console.log('===============================');
+
   if (!API_KEY) {
     throw new Error('Gemini API key is not configured. Set GEMINI_API_KEY in your .env file.');
   }
@@ -122,13 +139,19 @@ export async function analyzeImage(base64Image: string): Promise<AnalysisResult>
       },
     };
 
+    console.log('Sending request to Gemini API (model: gemini-2.0-flash)...');
     const result = await model.generateContent([ANALYSIS_PROMPT, imagePart]);
+    console.log('Gemini response received');
     const response = await result.response;
     const text = response.text();
+    console.log('Response length:', text.length);
+    console.log('Response first 500 chars:', text.substring(0, 500));
+    console.log('Response last 200 chars:', text.substring(text.length - 200));
 
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-      throw new Error('Failed to parse response as JSON');
+      console.error('No JSON found in response. Full response:', text);
+      throw new Error('NOT_FRIDGE_IMAGE');
     }
 
     const parsed = JSON.parse(jsonMatch[0]);
@@ -150,17 +173,15 @@ export async function analyzeImage(base64Image: string): Promise<AnalysisResult>
       needMoreRecipes,
     };
   } catch (error) {
-    // Detailed logging for debugging
-    console.error('=== Gemini Analysis Error ===');
-    console.error('Timestamp:', new Date().toISOString());
-    console.error('Error type:', error instanceof Error ? error.constructor.name : typeof error);
-    console.error('Error message:', error instanceof Error ? error.message : String(error));
-    if (error instanceof Error && error.stack) {
-      console.error('Stack trace:', error.stack);
+    // Re-throw known error types so the UI can handle them
+    if (error instanceof Error && error.message === 'NOT_FRIDGE_IMAGE') {
+      throw error;
     }
-    console.error('=============================');
 
-    // Throw a generic error for the UI
+    logger.error(
+      'Gemini analysis failed',
+      error instanceof Error ? error : new Error(String(error))
+    );
     throw new Error('ANALYSIS_FAILED');
   }
 }
@@ -198,15 +219,10 @@ Respond ONLY with valid JSON array with detailed recipes. All text MUST be in ${
 
     return JSON.parse(jsonMatch[0]) as Recipe[];
   } catch (error) {
-    // Detailed logging for debugging
-    console.error('=== Recipe Suggestions Error ===');
-    console.error('Timestamp:', new Date().toISOString());
-    console.error('Error type:', error instanceof Error ? error.constructor.name : typeof error);
-    console.error('Error message:', error instanceof Error ? error.message : String(error));
-    if (error instanceof Error && error.stack) {
-      console.error('Stack trace:', error.stack);
-    }
-    console.error('================================');
+    logger.error(
+      'Recipe suggestions failed',
+      error instanceof Error ? error : new Error(String(error))
+    );
 
     // Throw a generic error for the UI
     throw new Error('RECIPE_FAILED');
