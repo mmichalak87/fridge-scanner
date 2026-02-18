@@ -1,6 +1,7 @@
 export interface Product {
   id: string;
   name: string;
+  emoji?: string;
   confidence?: number;
 }
 
@@ -19,6 +20,9 @@ export interface AlternativeRecipe {
 export interface Recipe {
   id: string;
   name: string;
+  emoji?: string;
+  imageSearchTerm?: string;
+  imageUrl?: string;
   ingredients: string[];
   availableIngredients: string[];
   missingIngredients: string[];

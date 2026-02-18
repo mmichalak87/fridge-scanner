@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import { Platform } from 'react-native';
 import { ScanUsage } from '../types';
+import { logger } from '../utils/errorLogger';
 
 const SCAN_USAGE_KEY = 'daily_scan_usage';
 const REVENUECAT_IOS_KEY = 'test_puBBmSoOwzeyluNZpBGHXFbXqJO';
@@ -37,7 +38,7 @@ export function initRevenueCat(): Promise<void> {
       const apiKey = Platform.OS === 'ios' ? REVENUECAT_IOS_KEY : REVENUECAT_ANDROID_KEY;
       await Purchases.configure({ apiKey });
     } catch (error) {
-      console.error('Failed to initialize RevenueCat:', error);
+      logger.error('Failed to initialize RevenueCat', error);
     }
   })();
   return initPromise;
@@ -58,7 +59,7 @@ export function checkProStatus(): Promise<boolean> {
       const customerInfo = await Purchases.getCustomerInfo();
       return customerInfo.entitlements.active[PRO_ENTITLEMENT_ID] !== undefined;
     } catch (error) {
-      console.error('Failed to check pro status:', error);
+      logger.error('Failed to check pro status', error);
       return false;
     } finally {
       // Clear after completion so next call makes a fresh request
@@ -87,7 +88,7 @@ export async function getOfferings(languageCode?: string): Promise<PurchasesPack
     }
     return null;
   } catch (error) {
-    console.error('Failed to get offerings:', error);
+    logger.error('Failed to get offerings', error);
     return null;
   }
 }
@@ -100,7 +101,9 @@ export async function purchasePackage(pkg: PurchasesPackage): Promise<PurchaseRe
     const { customerInfo } = await Purchases.purchasePackage(pkg);
     const isPro = customerInfo.entitlements.active[PRO_ENTITLEMENT_ID] !== undefined;
     if (!isPro) {
-      console.warn('Purchase completed but entitlement not active. Active entitlements:', Object.keys(customerInfo.entitlements.active));
+      logger.warn('Purchase completed but entitlement not active', {
+        activeEntitlements: Object.keys(customerInfo.entitlements.active),
+      });
       return 'no_entitlement';
     }
     return 'success';
@@ -108,7 +111,7 @@ export async function purchasePackage(pkg: PurchasesPackage): Promise<PurchaseRe
     if (error.userCancelled) {
       return 'cancelled';
     }
-    console.error('Purchase failed:', error);
+    logger.error('Purchase failed', error);
     return 'failed';
   }
 }
@@ -119,7 +122,7 @@ export async function restorePurchases(): Promise<boolean> {
     const customerInfo = await Purchases.restorePurchases();
     return customerInfo.entitlements.active[PRO_ENTITLEMENT_ID] !== undefined;
   } catch (error) {
-    console.error('Failed to restore purchases:', error);
+    logger.error('Failed to restore purchases', error);
     return false;
   }
 }

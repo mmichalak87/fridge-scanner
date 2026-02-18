@@ -6,8 +6,8 @@ import { AppState } from 'react-native';
 // Mock the subscription service
 jest.mock('../../services/subscription');
 
-// Mock expo-router - don't call callback automatically
-jest.mock('expo-router', () => ({
+// Mock @react-navigation/native - don't call callback automatically
+jest.mock('@react-navigation/native', () => ({
   useFocusEffect: jest.fn(),
 }));
 

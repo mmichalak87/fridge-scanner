@@ -1,4 +1,4 @@
-// Simple in-app error logger for TestFlight debugging
+// Simple in-app error logger for TestFlight debugging + Crashlytics
 
 type LogEntry = {
   timestamp: string;
@@ -7,6 +7,14 @@ type LogEntry = {
   data?: any;
 };
 
+function getCrashlytics() {
+  try {
+    return require('@react-native-firebase/crashlytics').default();
+  } catch {
+    return null;
+  }
+}
+
 class ErrorLogger {
   private logs: LogEntry[] = [];
   private maxLogs = 100;
@@ -14,16 +22,26 @@ class ErrorLogger {
 
   log(message: string, data?: any) {
     this.addLog('info', message, data);
+    getCrashlytics()?.log(message);
     console.log('📝', message, data);
   }
 
   error(message: string, error?: any) {
     this.addLog('error', message, error);
+    const cl = getCrashlytics();
+    if (cl) {
+      if (error instanceof Error) {
+        cl.recordError(error);
+      } else {
+        cl.recordError(new Error(message));
+      }
+    }
     console.error('❌', message, error);
   }
 
   warn(message: string, data?: any) {
     this.addLog('warn', message, data);
+    getCrashlytics()?.log(`[WARN] ${message}`);
     console.warn('⚠️', message, data);
   }
 

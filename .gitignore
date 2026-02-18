@@ -8,6 +8,10 @@ dist/
 web-build/
 
 # Native
+ios/Pods/
+ios/build/
+android/app/build/
+android/build/
 *.orig.*
 *.jks
 *.p8

@@ -5,15 +5,18 @@ export default {
     start: 'Zaczynamy',
     welcome: {
       title: 'Witaj w CookVision',
-      description: 'Twój inteligentny asystent kuchenny, który pomoże Ci odkryć pyszne przepisy z produktów, które już masz.',
+      description:
+        'Twój inteligentny asystent kuchenny, który pomoże Ci odkryć pyszne przepisy z produktów, które już masz.',
     },
     scan: {
       title: 'Zeskanuj Lodówkę',
-      description: 'Po prostu zrób zdjęcie zawartości lodówki, a aplikacja rozpozna wszystkie produkty w środku.',
+      description:
+        'Po prostu zrób zdjęcie zawartości lodówki, a aplikacja rozpozna wszystkie produkty w środku.',
     },
     recipes: {
       title: 'Otrzymaj Pomysły na Przepisy',
-      description: 'Otrzymuj spersonalizowane propozycje przepisów na podstawie Twoich składników, z inteligentnymi zamiennikami brakujących produktów.',
+      description:
+        'Otrzymuj spersonalizowane propozycje przepisów na podstawie Twoich składników, z inteligentnymi zamiennikami brakujących produktów.',
     },
   },
   common: {
@@ -80,6 +83,9 @@ export default {
   errors: {
     analysisFailedTitle: 'Ups!',
     analysisFailedMessage: 'Coś poszło nie tak, ale pracujemy nad tym!',
+    notFridgeTitle: 'To nie lodówka',
+    notFridgeMessage:
+      'Nie znaleźliśmy produktów spożywczych na tym zdjęciu. Zrób zdjęcie wnętrza lodówki.',
     analysisFailedEmoji: '🍳',
     cameraError: 'Wystąpił błąd kamery',
     networkError: 'Błąd sieci. Sprawdź połączenie.',
@@ -91,7 +97,8 @@ export default {
     about: 'O Aplikacji',
     appName: 'CookVision',
     version: 'Wersja {{version}}',
-    appDescription: 'Skanuj zawartość lodówki i odkrywaj pyszne przepisy dzięki inteligentnemu rozpoznawaniu składników.',
+    appDescription:
+      'Skanuj zawartość lodówki i odkrywaj pyszne przepisy dzięki inteligentnemu rozpoznawaniu składników.',
     poweredBy: 'Powered by Google Gemini',
   },
   favorites: {
@@ -119,7 +126,8 @@ export default {
     remainingScans: 'Pozostało {{count}} skanów na dziś',
     unlimited: 'Nielimitowane skany',
     scanLimitReached: 'Dzienny Limit Skanów Osiągnięty',
-    scanLimitMessage: 'Darmowi użytkownicy mogą skanować {{limit}} razy dziennie. Ulepsz do Pro, aby uzyskać nielimitowane skany!',
+    scanLimitMessage:
+      'Darmowi użytkownicy mogą skanować {{limit}} razy dziennie. Ulepsz do Pro, aby uzyskać nielimitowane skany!',
     upgradeTitle: 'Odblokuj CookVision Pro',
     upgradeSubtitle: 'Wykorzystaj pełnię możliwości asystenta kuchennego',
     featureUnlimitedScans: 'Nielimitowane dzienne skany',
@@ -134,7 +142,8 @@ export default {
     restoreFailed: 'Brak zakupów do przywrócenia',
     subscribe: 'Subskrybuj',
     purchaseFailed: 'Zakup nie powiódł się. Spróbuj ponownie.',
-    purchaseNoEntitlement: 'Zakup zakończony, ale subskrypcja nie jest jeszcze aktywna. Spróbuj przywrócić zakupy.',
+    purchaseNoEntitlement:
+      'Zakup zakończony, ale subskrypcja nie jest jeszcze aktywna. Spróbuj przywrócić zakupy.',
     perMonth: '/miesiąc',
     perYear: '/rok',
   },

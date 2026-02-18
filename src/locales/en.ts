@@ -5,15 +5,18 @@ export default {
     start: 'Get Started',
     welcome: {
       title: 'Welcome to CookVision',
-      description: 'Your smart kitchen assistant that helps you discover delicious recipes from ingredients you already have.',
+      description:
+        'Your smart kitchen assistant that helps you discover delicious recipes from ingredients you already have.',
     },
     scan: {
       title: 'Scan Your Fridge',
-      description: 'Simply take a photo of your fridge contents and the app will identify all the products inside.',
+      description:
+        'Simply take a photo of your fridge contents and the app will identify all the products inside.',
     },
     recipes: {
       title: 'Get Recipe Ideas',
-      description: 'Receive personalized recipe suggestions based on your ingredients, with smart substitutions for missing items.',
+      description:
+        'Receive personalized recipe suggestions based on your ingredients, with smart substitutions for missing items.',
     },
   },
   common: {
@@ -79,7 +82,10 @@ export default {
   },
   errors: {
     analysisFailedTitle: 'Oops!',
-    analysisFailedMessage: 'Something went wrong, but we\'re working to make it better!',
+    analysisFailedMessage: "Something went wrong, but we're working to make it better!",
+    notFridgeTitle: 'Not a fridge photo',
+    notFridgeMessage:
+      "We couldn't find any food products in this image. Please take a photo of the inside of your fridge.",
     analysisFailedEmoji: '🍳',
     cameraError: 'Camera error occurred',
     networkError: 'Network error. Check your connection.',
@@ -91,7 +97,8 @@ export default {
     about: 'About',
     appName: 'CookVision',
     version: 'Version {{version}}',
-    appDescription: 'Scan your fridge contents and discover delicious recipes with smart ingredient recognition.',
+    appDescription:
+      'Scan your fridge contents and discover delicious recipes with smart ingredient recognition.',
     poweredBy: 'Powered by Google Gemini',
   },
   favorites: {
@@ -119,7 +126,8 @@ export default {
     remainingScans: '{{count}} scans left today',
     unlimited: 'Unlimited scans',
     scanLimitReached: 'Daily Scan Limit Reached',
-    scanLimitMessage: 'Free users can scan {{limit}} times per day. Upgrade to Pro for unlimited scans!',
+    scanLimitMessage:
+      'Free users can scan {{limit}} times per day. Upgrade to Pro for unlimited scans!',
     upgradeTitle: 'Unlock CookVision Pro',
     upgradeSubtitle: 'Get the most out of your kitchen assistant',
     featureUnlimitedScans: 'Unlimited daily scans',
@@ -134,7 +142,8 @@ export default {
     restoreFailed: 'No purchases to restore',
     subscribe: 'Subscribe',
     purchaseFailed: 'Purchase failed. Please try again.',
-    purchaseNoEntitlement: 'Purchase completed but subscription is not yet active. Please try restoring purchases.',
+    purchaseNoEntitlement:
+      'Purchase completed but subscription is not yet active. Please try restoring purchases.',
     perMonth: '/month',
     perYear: '/year',
   },

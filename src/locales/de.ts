@@ -5,15 +5,18 @@ export default {
     start: 'Los gehts',
     welcome: {
       title: 'Willkommen bei CookVision',
-      description: 'Ihr intelligenter Kuchenassistent, der Ihnen hilft, leckere Rezepte aus Zutaten zu entdecken, die Sie bereits haben.',
+      description:
+        'Ihr intelligenter Kuchenassistent, der Ihnen hilft, leckere Rezepte aus Zutaten zu entdecken, die Sie bereits haben.',
     },
     scan: {
       title: 'Scannen Sie Ihren Kuhlschrank',
-      description: 'Machen Sie einfach ein Foto vom Inhalt Ihres Kuhlschranks und die App erkennt alle Produkte darin.',
+      description:
+        'Machen Sie einfach ein Foto vom Inhalt Ihres Kuhlschranks und die App erkennt alle Produkte darin.',
     },
     recipes: {
       title: 'Rezeptideen Erhalten',
-      description: 'Erhalten Sie personalisierte Rezeptvorschlage basierend auf Ihren Zutaten, mit intelligenten Ersatzvorschlagen fur fehlende Artikel.',
+      description:
+        'Erhalten Sie personalisierte Rezeptvorschlage basierend auf Ihren Zutaten, mit intelligenten Ersatzvorschlagen fur fehlende Artikel.',
     },
   },
   common: {
@@ -80,6 +83,9 @@ export default {
   errors: {
     analysisFailedTitle: 'Ups!',
     analysisFailedMessage: 'Etwas ist schief gelaufen, aber wir arbeiten daran!',
+    notFridgeTitle: 'Kein Kühlschrankfoto',
+    notFridgeMessage:
+      'Wir konnten keine Lebensmittel auf diesem Bild finden. Bitte fotografieren Sie den Inhalt Ihres Kühlschranks.',
     analysisFailedEmoji: '🍳',
     cameraError: 'Kamerafehler aufgetreten',
     networkError: 'Netzwerkfehler. Uberprufen Sie Ihre Verbindung.',
@@ -91,7 +97,8 @@ export default {
     about: 'Uber',
     appName: 'CookVision',
     version: 'Version {{version}}',
-    appDescription: 'Scannen Sie Ihren Kuhlschrank und entdecken Sie leckere Rezepte mit intelligenter Zutatenerkennung.',
+    appDescription:
+      'Scannen Sie Ihren Kuhlschrank und entdecken Sie leckere Rezepte mit intelligenter Zutatenerkennung.',
     poweredBy: 'Powered by Google Gemini',
   },
   favorites: {
@@ -119,7 +126,8 @@ export default {
     remainingScans: '{{count}} Scans heute ubrig',
     unlimited: 'Unbegrenzte Scans',
     scanLimitReached: 'Tagliches Scan-Limit Erreicht',
-    scanLimitMessage: 'Kostenlose Nutzer konnen {{limit}} Mal pro Tag scannen. Upgraden Sie auf Pro fur unbegrenzte Scans!',
+    scanLimitMessage:
+      'Kostenlose Nutzer konnen {{limit}} Mal pro Tag scannen. Upgraden Sie auf Pro fur unbegrenzte Scans!',
     upgradeTitle: 'CookVision Pro Freischalten',
     upgradeSubtitle: 'Holen Sie das Beste aus Ihrem Kuchenassistenten',
     featureUnlimitedScans: 'Unbegrenzte tagliche Scans',
@@ -134,7 +142,8 @@ export default {
     restoreFailed: 'Keine Kaufe zum Wiederherstellen',
     subscribe: 'Abonnieren',
     purchaseFailed: 'Kauf fehlgeschlagen. Bitte versuchen Sie es erneut.',
-    purchaseNoEntitlement: 'Kauf abgeschlossen, aber das Abo ist noch nicht aktiv. Versuchen Sie, Käufe wiederherzustellen.',
+    purchaseNoEntitlement:
+      'Kauf abgeschlossen, aber das Abo ist noch nicht aktiv. Versuchen Sie, Käufe wiederherzustellen.',
     perMonth: '/Monat',
     perYear: '/Jahr',
   },

@@ -1,7 +1,2 @@
-echo "🔍 Running TypeScript type check..."
-npm run lint || exit 1
-
-echo "🧪 Running tests..."
-npm test || exit 1
-
-echo "✅ All checks passed!"
+npx eslint 'src/**/*.{ts,tsx}' --max-warnings 0
+npm test
