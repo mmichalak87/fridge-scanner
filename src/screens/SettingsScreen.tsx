@@ -21,7 +21,7 @@ export default function SettingsScreen() {
     navigation.setOptions({
       title: t('settings.title'),
     });
-  }, [i18n.language]);
+  }, [navigation, t, i18n.language]);
 
   const changeLanguage = async (langCode: string) => {
     await saveLanguage(langCode);
@@ -51,7 +51,10 @@ export default function SettingsScreen() {
             </Text>
           </View>
           {!isPro && (
-            <TouchableOpacity style={styles.upgradeButton} onPress={() => navigation.navigate('Paywall')}>
+            <TouchableOpacity
+              style={styles.upgradeButton}
+              onPress={() => navigation.navigate('Paywall')}
+            >
               <Ionicons name="diamond" size={18} color="#fff" />
               <Text style={styles.upgradeButtonText}>{t('subscription.upgrade')}</Text>
             </TouchableOpacity>
@@ -104,9 +107,7 @@ export default function SettingsScreen() {
         <Text style={styles.sectionTitle}>{t('settings.about')}</Text>
         <View style={styles.aboutCard}>
           <Text style={styles.appName}>{t('settings.appName')}</Text>
-          <Text style={styles.appVersion}>
-            {t('settings.version', { version: appVersion })}
-          </Text>
+          <Text style={styles.appVersion}>{t('settings.version', { version: appVersion })}</Text>
           <Text style={styles.appDescription}>{t('settings.appDescription')}</Text>
           <Text style={styles.poweredBy}>{t('settings.poweredBy')}</Text>
         </View>
@@ -119,9 +120,25 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
   content: { padding: 16 },
   section: { marginBottom: 24 },
-  sectionTitle: { fontSize: 14, fontWeight: '600', color: '#888', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12, marginLeft: 4 },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#888',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 12,
+    marginLeft: 4,
+  },
   languageList: { backgroundColor: '#fff', borderRadius: 16, overflow: 'hidden' },
-  languageItem: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+  languageItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
   languageItemActive: { backgroundColor: '#E8F5E9' },
   languageInfo: { flex: 1 },
   languageName: { fontSize: 16, fontWeight: '500', color: '#1a1a1a' },
@@ -129,19 +146,47 @@ const styles = StyleSheet.create({
   languageNameEn: { fontSize: 14, color: '#888', marginTop: 2 },
   checkmark: { fontSize: 20, color: '#4CAF50', fontWeight: '600' },
   subscriptionCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20 },
-  subscriptionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 },
-  planChip: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#f0f0f0', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12 },
+  subscriptionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  planChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
   planChipPro: { backgroundColor: '#2E7D32' },
   planChipText: { fontSize: 14, fontWeight: '700', color: '#666' },
   planChipTextPro: { color: '#fff' },
   scanInfo: { fontSize: 13, color: '#888', fontWeight: '500' },
-  upgradeButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#4CAF50', paddingVertical: 14, borderRadius: 12, gap: 8, marginBottom: 8 },
+  upgradeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#4CAF50',
+    paddingVertical: 14,
+    borderRadius: 12,
+    gap: 8,
+    marginBottom: 8,
+  },
   upgradeButtonText: { fontSize: 16, fontWeight: '600', color: '#fff' },
   restoreButton: { alignItems: 'center', paddingVertical: 10 },
   restoreButtonText: { fontSize: 14, color: '#4CAF50', fontWeight: '500' },
   aboutCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, alignItems: 'center' },
   appName: { fontSize: 24, fontWeight: '700', color: '#1a1a1a', marginBottom: 4 },
   appVersion: { fontSize: 14, color: '#888', marginBottom: 16 },
-  appDescription: { fontSize: 15, color: '#666', textAlign: 'center', lineHeight: 22, marginBottom: 16 },
+  appDescription: {
+    fontSize: 15,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 16,
+  },
   poweredBy: { fontSize: 12, color: '#999' },
 });

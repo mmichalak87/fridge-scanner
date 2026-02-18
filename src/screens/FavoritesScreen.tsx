@@ -22,7 +22,7 @@ export default function FavoritesScreen() {
     navigation.setOptions({
       title: t('favorites.title'),
     });
-  }, [i18n.language]);
+  }, [navigation, t, i18n.language]);
 
   useFocusEffect(
     useCallback(() => {
@@ -45,7 +45,7 @@ export default function FavoritesScreen() {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.content}>
         {favorites.length > 0 ? (
-          favorites.map((recipe) => (
+          favorites.map(recipe => (
             <RecipeCard
               key={recipe.id}
               recipe={recipe}
@@ -55,10 +55,7 @@ export default function FavoritesScreen() {
           ))
         ) : (
           <View style={styles.emptyContainer}>
-            <LinearGradient
-              colors={['#FFEBEE', '#FFCDD2']}
-              style={styles.emptyIcon}
-            >
+            <LinearGradient colors={['#FFEBEE', '#FFCDD2']} style={styles.emptyIcon}>
               <Ionicons name="heart-outline" size={48} color="#F44336" />
             </LinearGradient>
             <Text style={styles.emptyTitle}>{t('favorites.empty')}</Text>
@@ -67,10 +64,7 @@ export default function FavoritesScreen() {
               style={styles.scanButton}
               onPress={() => navigation.navigate('Camera')}
             >
-              <LinearGradient
-                colors={['#4CAF50', '#388E3C']}
-                style={styles.scanButtonGradient}
-              >
+              <LinearGradient colors={['#4CAF50', '#388E3C']} style={styles.scanButtonGradient}>
                 <Ionicons name="camera" size={20} color="#fff" />
                 <Text style={styles.scanButtonText}>{t('home.scanButton')}</Text>
               </LinearGradient>
@@ -86,10 +80,30 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
   content: { padding: 16, paddingBottom: 40 },
   emptyContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 60 },
-  emptyIcon: { width: 100, height: 100, borderRadius: 50, justifyContent: 'center', alignItems: 'center', marginBottom: 24 },
+  emptyIcon: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
   emptyTitle: { fontSize: 20, fontWeight: '700', color: '#333', marginBottom: 8 },
-  emptyHint: { fontSize: 15, color: '#666', textAlign: 'center', paddingHorizontal: 40, lineHeight: 22, marginBottom: 32 },
+  emptyHint: {
+    fontSize: 15,
+    color: '#666',
+    textAlign: 'center',
+    paddingHorizontal: 40,
+    lineHeight: 22,
+    marginBottom: 32,
+  },
   scanButton: { borderRadius: 16, overflow: 'hidden' },
-  scanButtonGradient: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 24, gap: 10 },
+  scanButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    gap: 10,
+  },
   scanButtonText: { fontSize: 16, fontWeight: '600', color: '#fff' },
 });

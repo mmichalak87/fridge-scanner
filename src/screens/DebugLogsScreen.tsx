@@ -20,7 +20,7 @@ export default function DebugLogsScreen() {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [navigation]);
 
   const handleClear = () => {
     Alert.alert('Clear Logs', 'Are you sure you want to clear all logs?', [
@@ -48,26 +48,34 @@ export default function DebugLogsScreen() {
         message: logsText,
         title: 'CookVision Debug Logs',
       });
-    } catch (error) {
+    } catch {
       Alert.alert('Error', 'Failed to share logs');
     }
   };
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'error': return '#FF6B6B';
-      case 'warn': return '#FFA500';
-      case 'info': return '#4CAF50';
-      default: return '#888';
+      case 'error':
+        return '#FF6B6B';
+      case 'warn':
+        return '#FFA500';
+      case 'info':
+        return '#4CAF50';
+      default:
+        return '#888';
     }
   };
 
   const getLevelIcon = (level: string) => {
     switch (level) {
-      case 'error': return 'close-circle';
-      case 'warn': return 'warning';
-      case 'info': return 'information-circle';
-      default: return 'help-circle';
+      case 'error':
+        return 'close-circle';
+      case 'warn':
+        return 'warning';
+      case 'info':
+        return 'information-circle';
+      default:
+        return 'help-circle';
     }
   };
 
@@ -100,7 +108,11 @@ export default function DebugLogsScreen() {
           logs.map((log, index) => (
             <View key={index} style={styles.logEntry}>
               <View style={styles.logHeader}>
-                <Ionicons name={getLevelIcon(log.level) as any} size={16} color={getLevelColor(log.level)} />
+                <Ionicons
+                  name={getLevelIcon(log.level) as any}
+                  size={16}
+                  color={getLevelColor(log.level)}
+                />
                 <Text style={[styles.logLevel, { color: getLevelColor(log.level) }]}>
                   {log.level.toUpperCase()}
                 </Text>
@@ -124,7 +136,15 @@ export default function DebugLogsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
-  header: { backgroundColor: '#fff', padding: 16, borderBottomWidth: 1, borderBottomColor: '#e0e0e0', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  header: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   stats: { flex: 1 },
   statsText: { fontSize: 14, color: '#666', fontWeight: '500' },
   actions: { flexDirection: 'row', gap: 12 },
@@ -134,7 +154,14 @@ const styles = StyleSheet.create({
   emptyState: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 80 },
   emptyText: { fontSize: 18, fontWeight: '600', color: '#333', marginTop: 16 },
   emptySubtext: { fontSize: 14, color: '#888', marginTop: 8 },
-  logEntry: { backgroundColor: '#fff', borderRadius: 12, padding: 12, marginBottom: 12, borderLeftWidth: 4, borderLeftColor: '#4CAF50' },
+  logEntry: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#4CAF50',
+  },
   logHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 8, gap: 8 },
   logLevel: { fontSize: 12, fontWeight: '700', flex: 1 },
   logTimestamp: { fontSize: 11, color: '#888' },

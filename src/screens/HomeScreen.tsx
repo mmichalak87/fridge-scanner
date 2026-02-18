@@ -1,5 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+  Image,
+} from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
@@ -11,8 +19,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getRecentScans, getFavoriteRecipes, RecentScan } from '../services/storage';
 import { useSubscription } from '../hooks/useSubscription';
 import { RootStackParamList } from '../navigation/types';
-
-const { width } = Dimensions.get('window');
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -26,12 +32,14 @@ export default function HomeScreen() {
 
   useEffect(() => {
     checkOnboarding();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useFocusEffect(
     useCallback(() => {
       loadData();
       refreshSubscription();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   );
 
@@ -191,9 +199,7 @@ export default function HomeScreen() {
                   ? t('subscription.unlimited')
                   : t('subscription.remainingScans', { count: remainingScans as number })}
               </Text>
-              {!isPro && (
-                <Ionicons name="chevron-forward" size={14} color="#4CAF50" />
-              )}
+              {!isPro && <Ionicons name="chevron-forward" size={14} color="#4CAF50" />}
             </TouchableOpacity>
           </View>
 
@@ -206,7 +212,7 @@ export default function HomeScreen() {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.recentList}
               >
-                {recentScans.map((scan) => (
+                {recentScans.map(scan => (
                   <TouchableOpacity
                     key={scan.id}
                     style={styles.recentCard}
