@@ -182,7 +182,8 @@ const styles = StyleSheet.create({
   subscriptionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: 8,
     marginBottom: 16,
   },
   planChip: {

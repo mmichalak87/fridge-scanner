@@ -67,16 +67,14 @@ export default function CameraScreen() {
   };
 
   const toggleCameraFacing = () => {
-    setFacing((current) => (current === 'back' ? 'front' : 'back'));
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
   };
 
   if (!hasPermission) {
     return (
       <SafeAreaView style={styles.permissionContainer}>
         <Text style={styles.permissionTitle}>{t('camera.noPermission')}</Text>
-        <Text style={styles.permissionText}>
-          {t('camera.instruction')}
-        </Text>
+        <Text style={styles.permissionText}>{t('camera.instruction')}</Text>
         <TouchableOpacity style={styles.permissionButton} onPress={requestPermission}>
           <Text style={styles.permissionButtonText}>{t('camera.requestPermission')}</Text>
         </TouchableOpacity>
@@ -99,47 +97,49 @@ export default function CameraScreen() {
     <View style={styles.container}>
       <Camera
         ref={cameraRef}
-        style={styles.camera}
+        style={StyleSheet.absoluteFill}
         device={device}
         isActive={true}
         photo={true}
-      >
-        <SafeAreaView style={styles.overlay}>
-          <View style={styles.topBar}>
-            <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
-              <Ionicons name="close" size={28} color="#fff" />
-            </TouchableOpacity>
-            <Text style={styles.title}>{t('camera.title')}</Text>
-            <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
-              <Ionicons name="camera-reverse" size={28} color="#fff" />
-            </TouchableOpacity>
-          </View>
+      />
+      <SafeAreaView style={styles.overlay}>
+        <View style={styles.topBar}>
+          <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+            <Ionicons name="close" size={28} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.title}>{t('camera.title')}</Text>
+          <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
+            <Ionicons name="camera-reverse" size={28} color="#fff" />
+          </TouchableOpacity>
+        </View>
 
-          <View style={styles.instructionContainer}>
-            <Text style={styles.instruction}>{t('camera.instruction')}</Text>
-          </View>
+        <View style={styles.instructionContainer}>
+          <Text style={styles.instruction}>{t('camera.instruction')}</Text>
+        </View>
 
-          <View style={styles.bottomBar}>
-            <TouchableOpacity style={styles.galleryButton} onPress={() => navigation.navigate('Gallery')}>
-              <Ionicons name="images" size={28} color="#fff" />
-            </TouchableOpacity>
+        <View style={styles.bottomBar}>
+          <TouchableOpacity
+            style={styles.galleryButton}
+            onPress={() => navigation.navigate('Gallery')}
+          >
+            <Ionicons name="images" size={28} color="#fff" />
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.captureButton, isCapturing && styles.capturingButton]}
-              onPress={takePhoto}
-              disabled={isCapturing}
-            >
-              {isCapturing ? (
-                <ActivityIndicator color="#4CAF50" size="small" />
-              ) : (
-                <View style={styles.captureInner} />
-              )}
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.captureButton, isCapturing && styles.capturingButton]}
+            onPress={takePhoto}
+            disabled={isCapturing}
+          >
+            {isCapturing ? (
+              <ActivityIndicator color="#4CAF50" size="small" />
+            ) : (
+              <View style={styles.captureInner} />
+            )}
+          </TouchableOpacity>
 
-            <View style={styles.placeholder} />
-          </View>
-        </SafeAreaView>
-      </Camera>
+          <View style={styles.placeholder} />
+        </View>
+      </SafeAreaView>
     </View>
   );
 }
@@ -149,11 +149,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
-  camera: {
-    flex: 1,
-  },
   overlay: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'space-between',
   },
   loadingContainer: {

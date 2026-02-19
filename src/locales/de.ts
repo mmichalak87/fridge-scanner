@@ -32,6 +32,7 @@ export default {
     subtitle: 'Scannen Sie Ihren Kuhlschrank und entdecken Sie Rezepte',
     scanButton: 'Kuhlschrank Scannen',
     galleryButton: 'Aus Galerie Wahlen',
+    galleryTitle: 'Galerie',
     recentScans: 'Letzte Scans',
     featureScan: 'Scan',
     featureRecipes: 'Rezepte',

@@ -294,7 +294,7 @@ export default function OnboardingScreen() {
         </View>
       </View>
 
-      <View style={[styles.bottomContainer, { bottom: insets.bottom + 12 }]}>
+      <View style={[styles.bottomContainer, { bottom: insets.bottom + 40 }]}>
         <TouchableOpacity onPress={handleNext} activeOpacity={0.8}>
           <LinearGradient
             colors={currentSlide.colors}

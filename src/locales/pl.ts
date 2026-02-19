@@ -32,6 +32,7 @@ export default {
     subtitle: 'Zeskanuj lodówkę i odkryj przepisy',
     scanButton: 'Skanuj Lodówkę',
     galleryButton: 'Wybierz z Galerii',
+    galleryTitle: 'Galeria',
     recentScans: 'Ostatnie Skany',
     featureScan: 'Skan',
     featureRecipes: 'Przepisy',

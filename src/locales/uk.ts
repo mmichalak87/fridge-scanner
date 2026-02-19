@@ -32,6 +32,7 @@ export default {
     subtitle: 'Скануйте холодильник і відкрийте рецепти',
     scanButton: 'Сканувати Холодильник',
     galleryButton: 'Вибрати з Галереї',
+    galleryTitle: 'Галерея',
     recentScans: 'Останні Сканування',
     featureScan: 'Скан',
     featureRecipes: 'Рецепти',

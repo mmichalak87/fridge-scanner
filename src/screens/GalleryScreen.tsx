@@ -44,6 +44,10 @@ export default function GalleryScreen() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   useEffect(() => {
+    navigation.setOptions({ title: t('home.galleryTitle') });
+  }, [navigation, t]);
+
+  useEffect(() => {
     loadPhotos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

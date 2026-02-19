@@ -13,6 +13,7 @@ ios/build/
 android/app/build/
 android/build/
 *.orig.*
+*.xcuserstate
 *.jks
 *.p8
 *.p12

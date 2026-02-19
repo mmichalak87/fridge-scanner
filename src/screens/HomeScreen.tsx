@@ -97,7 +97,7 @@ export default function HomeScreen() {
             style={styles.headerButton}
             onPress={() => navigation.navigate('Favorites')}
           >
-            <Ionicons name="heart" size={22} color="#F44336" />
+            <Ionicons name="heart-outline" size={22} color="#2E7D32" />
             {favoritesCount > 0 && (
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>{favoritesCount}</Text>
@@ -132,29 +132,6 @@ export default function HomeScreen() {
 
             <Text style={styles.title}>{t('home.title')}</Text>
             <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
-
-            <View style={styles.features}>
-              <View style={styles.featureItem}>
-                <View style={styles.featureIcon}>
-                  <Ionicons name="scan" size={16} color="#4CAF50" />
-                </View>
-                <Text style={styles.featureText}>{t('home.featureScan')}</Text>
-              </View>
-              <View style={styles.featureDot} />
-              <View style={styles.featureItem}>
-                <View style={styles.featureIcon}>
-                  <Ionicons name="restaurant" size={16} color="#4CAF50" />
-                </View>
-                <Text style={styles.featureText}>{t('home.featureRecipes')}</Text>
-              </View>
-              <View style={styles.featureDot} />
-              <View style={styles.featureItem}>
-                <View style={styles.featureIcon}>
-                  <Ionicons name="swap-horizontal" size={16} color="#4CAF50" />
-                </View>
-                <Text style={styles.featureText}>{t('home.featureSubstitutes')}</Text>
-              </View>
-            </View>
           </View>
 
           <View style={styles.actions}>
@@ -355,45 +332,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 28,
   },
-  features: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  featureItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  featureIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: 'rgba(76, 175, 80, 0.15)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  featureText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#2E7D32',
-  },
-  featureDot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#81C784',
-    marginHorizontal: 8,
-  },
   actions: {
     width: '100%',
     paddingHorizontal: 24,
@@ -463,6 +401,7 @@ const styles = StyleSheet.create({
   },
   recentSection: {
     width: '100%',
+    paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 20,
   },

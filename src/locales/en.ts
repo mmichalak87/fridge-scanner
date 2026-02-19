@@ -32,6 +32,7 @@ export default {
     subtitle: 'Scan your fridge and discover recipes',
     scanButton: 'Scan Fridge',
     galleryButton: 'Choose from Gallery',
+    galleryTitle: 'Gallery',
     recentScans: 'Recent Scans',
     featureScan: 'Scan',
     featureRecipes: 'Recipes',
