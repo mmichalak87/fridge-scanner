@@ -33,7 +33,9 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-<key>NSPhotoLibraryUsageDescription</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>CookVision may use your location to improve recipe suggestions based on local ingredients availability.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string>CookVision needs access to your photo library to select food images for scanning.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>CookVision needs access to your camera to scan food products.</string>
