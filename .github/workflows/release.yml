@@ -148,6 +148,8 @@ jobs:
         run: |
           echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
           echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> .env
+          echo "REVENUECAT_IOS_KEY=${{ secrets.REVENUECAT_IOS_KEY }}" >> .env
+          echo "REVENUECAT_ANDROID_KEY=${{ secrets.REVENUECAT_ANDROID_KEY }}" >> .env
 
       - name: Setup Firebase config
         env:
@@ -318,6 +320,8 @@ jobs:
         run: |
           echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
           echo "PEXELS_API_KEY=${{ secrets.PEXELS_API_KEY }}" >> .env
+          echo "REVENUECAT_IOS_KEY=${{ secrets.REVENUECAT_IOS_KEY }}" >> .env
+          echo "REVENUECAT_ANDROID_KEY=${{ secrets.REVENUECAT_ANDROID_KEY }}" >> .env
 
       - name: Setup Firebase config
         env:

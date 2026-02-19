@@ -73,6 +73,8 @@ declare module 'react-native-image-resizer' {
 declare module 'react-native-config' {
   interface Config {
     GEMINI_API_KEY?: string;
+    REVENUECAT_IOS_KEY?: string;
+    REVENUECAT_ANDROID_KEY?: string;
     [key: string]: string | undefined;
   }
 

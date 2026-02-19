@@ -1,12 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import { Platform } from 'react-native';
+import Config from 'react-native-config';
 import { ScanUsage } from '../types';
 import { logger } from '../utils/errorLogger';
 
 const SCAN_USAGE_KEY = 'daily_scan_usage';
-const REVENUECAT_IOS_KEY = 'test_puBBmSoOwzeyluNZpBGHXFbXqJO';
-const REVENUECAT_ANDROID_KEY = 'test_puBBmSoOwzeyluNZpBGHXFbXqJO';
+const REVENUECAT_IOS_KEY = Config.REVENUECAT_IOS_KEY || '';
+const REVENUECAT_ANDROID_KEY = Config.REVENUECAT_ANDROID_KEY || '';
 const PRO_ENTITLEMENT_ID = 'pro';
 
 // Limits
