@@ -90,9 +90,7 @@
               "name": "[RNFB] Core Configuration",
               "path": "./ios_config.sh",
               "execution_position": "after_compile",
-              "input_files": [
-                "$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)"
-              ]
+              "input_files": ["$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)"]
             }
           ]
         },
@@ -162,6 +160,30 @@
           "libraryName": "RNCConfigSpec",
           "componentDescriptors": [],
           "cmakeListsPath": "/Users/macbook/projects/fridge/node_modules/react-native-config/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "react-native-device-info": {
+      "root": "/Users/macbook/projects/fridge/node_modules/react-native-device-info",
+      "name": "react-native-device-info",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/macbook/projects/fridge/node_modules/react-native-device-info/RNDeviceInfo.podspec",
+          "version": "15.0.1",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/macbook/projects/fridge/node_modules/react-native-device-info/android",
+          "packageImportPath": "import com.learnium.RNDeviceInfo.RNDeviceInfo;",
+          "packageInstance": "new RNDeviceInfo()",
+          "buildTypes": [],
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/macbook/projects/fridge/node_modules/react-native-device-info/android/build/generated/source/codegen/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -625,7 +647,8 @@
         },
         {
           "name": "--terminal <string>",
-          "description": "Launches the Metro Bundler in a new window using the specified terminal path."
+          "description": "Launches the Metro Bundler in a new window using the specified terminal path.",
+          "default": "vscode"
         },
         {
           "name": "--binary-path <string>",
@@ -792,7 +815,8 @@
         },
         {
           "name": "--terminal <string>",
-          "description": "Launches the Metro Bundler in a new window using the specified terminal path."
+          "description": "Launches the Metro Bundler in a new window using the specified terminal path.",
+          "default": "vscode"
         },
         {
           "name": "--appId <string>",

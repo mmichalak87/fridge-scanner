@@ -144,6 +144,8 @@ export default {
     purchaseFailed: 'Zakup nie powiódł się. Spróbuj ponownie.',
     purchaseNoEntitlement:
       'Zakup zakończony, ale subskrypcja nie jest jeszcze aktywna. Spróbuj przywrócić zakupy.',
+    appUserId: 'Twoje App User ID',
+    appUserIdCopied: 'App User ID skopiowane!',
     perMonth: '/miesiąc',
     perYear: '/rok',
   },

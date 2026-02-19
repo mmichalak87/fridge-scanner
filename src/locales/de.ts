@@ -144,6 +144,8 @@ export default {
     purchaseFailed: 'Kauf fehlgeschlagen. Bitte versuchen Sie es erneut.',
     purchaseNoEntitlement:
       'Kauf abgeschlossen, aber das Abo ist noch nicht aktiv. Versuchen Sie, Käufe wiederherzustellen.',
+    appUserId: 'Ihre App User ID',
+    appUserIdCopied: 'App User ID kopiert!',
     perMonth: '/Monat',
     perYear: '/Jahr',
   },

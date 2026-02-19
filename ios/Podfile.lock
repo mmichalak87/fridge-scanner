@@ -2080,6 +2080,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - RNDeviceInfo (15.0.1):
+    - React-Core
   - RNFBAnalytics (23.8.6):
     - FirebaseAnalytics/Core (= 12.8.0)
     - FirebaseAnalytics/IdentitySupport (= 12.8.0)
@@ -2347,6 +2349,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
@@ -2537,6 +2540,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFBAnalytics:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
@@ -2655,6 +2660,7 @@ SPEC CHECKSUMS:
   ReactNativeDependencies: 88af432643451378a1653c0b69130987652417e1
   RevenueCat: e6722311bff00ecb66d7a1129138843bff94d742
   RNCAsyncStorage: 3a4f5e2777dae1688b781a487923a08569e27fe4
+  RNDeviceInfo: 36d7f232bfe7c9b5c494cb7793230424ed32c388
   RNFBAnalytics: 7682cb49e5ce072e407626faef0c917825bedcbd
   RNFBApp: 4c45430776a7768e7a75921cbd1cacb938cdf1f5
   RNFBCrashlytics: c1b2b68716995d50b606ab6f593ff1890de47873

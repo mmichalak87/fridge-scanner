@@ -144,6 +144,8 @@ export default {
     purchaseFailed: 'Purchase failed. Please try again.',
     purchaseNoEntitlement:
       'Purchase completed but subscription is not yet active. Please try restoring purchases.',
+    appUserId: 'Your App User ID',
+    appUserIdCopied: 'App User ID copied!',
     perMonth: '/month',
     perYear: '/year',
   },

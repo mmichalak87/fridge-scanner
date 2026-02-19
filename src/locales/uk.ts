@@ -144,6 +144,8 @@ export default {
     purchaseFailed: 'Покупка не вдалася. Спробуйте ще раз.',
     purchaseNoEntitlement:
       'Покупка завершена, але підписка ще не активна. Спробуйте відновити покупки.',
+    appUserId: 'Ваш App User ID',
+    appUserIdCopied: 'App User ID скопійовано!',
     perMonth: '/місяць',
     perYear: '/рік',
   },

@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 import Config from 'react-native-config';
+import * as RNLocalize from 'react-native-localize';
+import DeviceInfo from 'react-native-device-info';
 import { ScanUsage } from '../types';
 import { logger } from '../utils/errorLogger';
 
@@ -28,6 +30,50 @@ export function getMaxRecentScans(isPro: boolean): number {
 // RevenueCat (native only - not available on web)
 const isNative = Platform.OS === 'ios' || Platform.OS === 'android';
 
+const appVersion = require('../../package.json').version;
+
+async function setDeviceAttributes(): Promise<void> {
+  try {
+    const locales = RNLocalize.getLocales();
+    const timezone = RNLocalize.getTimeZone();
+    const { width, height } = Dimensions.get('window');
+
+    const deviceId = await DeviceInfo.getUniqueId();
+    const deviceModel = DeviceInfo.getModel();
+    const deviceBrand = DeviceInfo.getBrand();
+
+    const attributes: Record<string, string> = {
+      $displayName: '',
+      platform: Platform.OS,
+      os_version: Platform.Version?.toString() || '',
+      app_version: appVersion,
+      device_id: deviceId,
+      device_model: deviceModel,
+      device_brand: deviceBrand,
+      locale: locales[0]?.languageTag || '',
+      country: locales[0]?.countryCode || '',
+      timezone,
+      screen: `${width}x${height}`,
+    };
+
+    // Fetch IP address
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+      const res = await fetch('https://api.ipify.org?format=json', { signal: controller.signal });
+      clearTimeout(timeoutId);
+      const data = await res.json();
+      if (data.ip) attributes.ip_address = data.ip;
+    } catch {
+      // IP fetch is best-effort
+    }
+
+    await Purchases.setAttributes(attributes);
+  } catch (error) {
+    logger.error('Failed to set device attributes', error);
+  }
+}
+
 let initPromise: Promise<void> | null = null;
 let checkProPromise: Promise<boolean> | null = null;
 
@@ -38,6 +84,7 @@ export function initRevenueCat(): Promise<void> {
     try {
       const apiKey = Platform.OS === 'ios' ? REVENUECAT_IOS_KEY : REVENUECAT_ANDROID_KEY;
       await Purchases.configure({ apiKey });
+      await setDeviceAttributes();
     } catch (error) {
       logger.error('Failed to initialize RevenueCat', error);
     }
@@ -90,6 +137,17 @@ export async function getOfferings(languageCode?: string): Promise<PurchasesPack
     return null;
   } catch (error) {
     logger.error('Failed to get offerings', error);
+    return null;
+  }
+}
+
+export async function getAppUserId(): Promise<string | null> {
+  if (!(await waitForInit())) return null;
+  try {
+    const appUserId = await Purchases.getAppUserID();
+    return appUserId;
+  } catch (error) {
+    logger.error('Failed to get app user ID', error);
     return null;
   }
 }

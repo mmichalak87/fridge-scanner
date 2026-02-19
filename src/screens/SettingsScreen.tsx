@@ -1,10 +1,19 @@
-import { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  Clipboard,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LANGUAGES, saveLanguage } from '../locales/i18n';
 import { useSubscription } from '../hooks/useSubscription';
+import { getAppUserId } from '../services/subscription';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RootStackParamList } from '../navigation/types';
 
@@ -16,12 +25,19 @@ export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
   const navigation = useNavigation<NavigationProp>();
   const { isPro, remainingScans, restore } = useSubscription();
+  const [appUserId, setAppUserId] = useState<string | null>(null);
 
   useEffect(() => {
     navigation.setOptions({
       title: t('settings.title'),
     });
   }, [navigation, t, i18n.language]);
+
+  useEffect(() => {
+    if (isPro) {
+      getAppUserId().then(setAppUserId);
+    }
+  }, [isPro]);
 
   const changeLanguage = async (langCode: string) => {
     await saveLanguage(langCode);
@@ -71,6 +87,23 @@ export default function SettingsScreen() {
           >
             <Text style={styles.restoreButtonText}>{t('subscription.restore')}</Text>
           </TouchableOpacity>
+          {isPro && appUserId && (
+            <TouchableOpacity
+              style={styles.appUserIdContainer}
+              onPress={() => {
+                Clipboard.setString(appUserId);
+                Alert.alert('', t('subscription.appUserIdCopied'));
+              }}
+            >
+              <Text style={styles.appUserIdLabel}>{t('subscription.appUserId')}</Text>
+              <View style={styles.appUserIdRow}>
+                <Text style={styles.appUserIdValue} numberOfLines={1}>
+                  {appUserId}
+                </Text>
+                <Ionicons name="copy-outline" size={16} color="#888" />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
@@ -178,6 +211,19 @@ const styles = StyleSheet.create({
   upgradeButtonText: { fontSize: 16, fontWeight: '600', color: '#fff' },
   restoreButton: { alignItems: 'center', paddingVertical: 10 },
   restoreButtonText: { fontSize: 14, color: '#4CAF50', fontWeight: '500' },
+  appUserIdContainer: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#f0f0f0',
+  },
+  appUserIdLabel: { fontSize: 12, color: '#888', marginBottom: 4 },
+  appUserIdRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  appUserIdValue: { fontSize: 13, color: '#666', fontFamily: 'monospace', flex: 1 },
   aboutCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, alignItems: 'center' },
   appName: { fontSize: 24, fontWeight: '700', color: '#1a1a1a', marginBottom: 4 },
   appVersion: { fontSize: 14, color: '#888', marginBottom: 16 },
