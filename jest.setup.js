@@ -177,11 +177,23 @@ jest.mock('@react-native-camera-roll/camera-roll', () => ({
   },
 }));
 
+// Mock react-native-device-info
+jest.mock('react-native-device-info', () => ({
+  __esModule: true,
+  default: {
+    getUniqueId: jest.fn(() => Promise.resolve('test-device-id')),
+    getModel: jest.fn(() => 'iPhone 15 Pro'),
+    getBrand: jest.fn(() => 'Apple'),
+  },
+}));
+
 // Mock RevenueCat
 jest.mock('react-native-purchases', () => ({
   __esModule: true,
   default: {
     configure: jest.fn(() => Promise.resolve()),
+    setAttributes: jest.fn(() => Promise.resolve()),
+    getAppUserID: jest.fn(() => Promise.resolve('$RCAnonymousID:test123')),
     getCustomerInfo: jest.fn(() =>
       Promise.resolve({
         entitlements: { active: {} },
