@@ -46,9 +46,9 @@ export default function RootNavigator() {
         name="Camera"
         component={CameraScreen}
         options={{
-          title: 'Scan',
           presentation: 'fullScreenModal',
           headerShown: false,
+          header: () => null,
         }}
       />
       <Stack.Screen name="Results" component={ResultsScreen} options={{ title: 'Results' }} />

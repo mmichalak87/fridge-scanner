@@ -31,7 +31,7 @@ export function RecipeCard({ recipe, isFavorite = false, onToggleFavorite }: Rec
   useEffect(() => {
     if (!imageUrl) {
       const query = recipe.imageSearchTerm || recipe.name;
-      searchFoodImage(query).then(url => {
+      searchFoodImage(query, recipe.imageKeywords).then(url => {
         if (url) setImageUrl(url);
       });
     }

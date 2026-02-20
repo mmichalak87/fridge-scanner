@@ -55,6 +55,7 @@ IMPORTANT: Respond ONLY with valid JSON in this exact format, no additional text
       "name": "Recipe Name",
       "emoji": "🍳",
       "imageSearchTerm": "english keyword for photo search e.g. pancakes, omelette, pasta carbonara",
+      "imageKeywords": ["keyword1", "keyword2", "keyword3"],
       "ingredients": ["200g ingredient1", "2 tbsp ingredient2", "salt and pepper to taste"],
       "availableIngredients": ["ingredient1", "ingredient2", "salt", "pepper"],
       "missingIngredients": [],
@@ -70,6 +71,7 @@ IMPORTANT: Respond ONLY with valid JSON in this exact format, no additional text
       "name": "Recipe Name",
       "emoji": "🥘",
       "imageSearchTerm": "english keyword for photo search",
+      "imageKeywords": ["keyword1", "keyword2", "keyword3"],
       "ingredients": ["200g ingredient1", "100g missing ingredient"],
       "availableIngredients": ["ingredient1"],
       "missingIngredients": ["missing ingredient"],
@@ -112,8 +114,9 @@ Be thorough in identifying products - look for items on all shelves, in door com
 Each product MUST include an "emoji" field with a single emoji that best represents that specific product (e.g. 🥛 for milk, 🧀 for cheese, 🐟 for fish, 🥒 for cucumber, 🥫 for canned goods).
 Each recipe MUST include an "emoji" field with a single emoji that best represents the dish (e.g. 🍳 for omelette, 🥗 for salad, 🍝 for pasta, 🥘 for stew).
 Each recipe MUST include an "imageSearchTerm" field with a short English keyword for stock photo search (e.g. "pancakes", "chicken soup", "pasta carbonara", "greek salad"). Keep it simple, 1-3 words in English, describing the finished dish.
+Each recipe MUST include an "imageKeywords" field - an array of 3 alternative English search terms for finding a photo of this dish. Use different wording and specificity levels. Example for a tomato soup: ["tomato soup bowl", "creamy red soup", "homemade tomato bisque"]. These help find better stock photos.
 
-REMEMBER: All text content (product names, recipe names, ingredients, instructions, reasons) MUST be in ${language}. The "imageSearchTerm" field MUST always be in English.`;
+REMEMBER: All text content (product names, recipe names, ingredients, instructions, reasons) MUST be in ${language}. The "imageSearchTerm" and "imageKeywords" fields MUST always be in English.`;
 
 export async function analyzeImage(base64Image: string): Promise<AnalysisResult> {
   const currentLanguage = getLanguageName(i18n.language);

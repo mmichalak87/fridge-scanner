@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { Camera, useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
 import ImageResizer from 'react-native-image-resizer';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RNFS from 'react-native-fs';
 import { RootStackParamList } from '../navigation/types';
@@ -18,6 +18,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Camera'>;
 export default function CameraScreen() {
   const navigation = useNavigation<NavigationProp>();
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const [facing, setFacing] = useState<'back' | 'front'>('back');
   const { hasPermission, requestPermission } = useCameraPermission();
   const [isCapturing, setIsCapturing] = useState(false);
@@ -102,13 +103,21 @@ export default function CameraScreen() {
         isActive={true}
         photo={true}
       />
-      <SafeAreaView style={styles.overlay}>
+      <View style={[styles.overlay, { paddingTop: insets.top + 10, paddingBottom: insets.bottom }]}>
         <View style={styles.topBar}>
-          <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => navigation.goBack()}
+            hitSlop={{ top: 16, bottom: 16, left: 16, right: 16 }}
+          >
             <Ionicons name="close" size={28} color="#fff" />
           </TouchableOpacity>
           <Text style={styles.title}>{t('camera.title')}</Text>
-          <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
+          <TouchableOpacity
+            style={styles.flipButton}
+            onPress={toggleCameraFacing}
+            hitSlop={{ top: 16, bottom: 16, left: 16, right: 16 }}
+          >
             <Ionicons name="camera-reverse" size={28} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -139,7 +148,7 @@ export default function CameraScreen() {
 
           <View style={styles.placeholder} />
         </View>
-      </SafeAreaView>
+      </View>
     </View>
   );
 }
@@ -203,7 +212,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 10,
   },
   closeButton: {
     width: 44,

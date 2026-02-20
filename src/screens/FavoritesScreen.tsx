@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +43,9 @@ export default function FavoritesScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={[styles.content, favorites.length === 0 && styles.contentEmpty]}
+      >
         {favorites.length > 0 ? (
           favorites.map(recipe => (
             <RecipeCard
@@ -60,15 +62,6 @@ export default function FavoritesScreen() {
             </LinearGradient>
             <Text style={styles.emptyTitle}>{t('favorites.empty')}</Text>
             <Text style={styles.emptyHint}>{t('favorites.emptyHint')}</Text>
-            <TouchableOpacity
-              style={styles.scanButton}
-              onPress={() => navigation.navigate('Camera')}
-            >
-              <LinearGradient colors={['#4CAF50', '#388E3C']} style={styles.scanButtonGradient}>
-                <Ionicons name="camera" size={20} color="#fff" />
-                <Text style={styles.scanButtonText}>{t('home.scanButton')}</Text>
-              </LinearGradient>
-            </TouchableOpacity>
           </View>
         )}
       </ScrollView>
@@ -79,7 +72,8 @@ export default function FavoritesScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
   content: { padding: 16, paddingBottom: 40 },
-  emptyContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 60 },
+  contentEmpty: { flexGrow: 1, justifyContent: 'center' },
+  emptyContainer: { alignItems: 'center' },
   emptyIcon: {
     width: 100,
     height: 100,
@@ -95,15 +89,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 40,
     lineHeight: 22,
-    marginBottom: 32,
   },
-  scanButton: { borderRadius: 16, overflow: 'hidden' },
-  scanButtonGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    gap: 10,
-  },
-  scanButtonText: { fontSize: 16, fontWeight: '600', color: '#fff' },
 });

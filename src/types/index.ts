@@ -22,6 +22,7 @@ export interface Recipe {
   name: string;
   emoji?: string;
   imageSearchTerm?: string;
+  imageKeywords?: string[];
   imageUrl?: string;
   ingredients: string[];
   availableIngredients: string[];
