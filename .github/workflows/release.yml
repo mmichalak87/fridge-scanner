@@ -289,7 +289,7 @@ jobs:
   build-android:
     name: Build & Deploy Android
     needs: [test, bump-version]
-    if: false && always() && (needs.test.result == 'success') && (needs.bump-version.result == 'success' || needs.bump-version.result == 'skipped')
+    if: always() && (needs.test.result == 'success') && (needs.bump-version.result == 'success' || needs.bump-version.result == 'skipped')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
