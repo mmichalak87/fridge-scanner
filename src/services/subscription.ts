@@ -83,9 +83,15 @@ export function initRevenueCat(): Promise<void> {
   initPromise = (async () => {
     try {
       const apiKey = Platform.OS === 'ios' ? REVENUECAT_IOS_KEY : REVENUECAT_ANDROID_KEY;
+      console.log(
+        '[RC] Initializing with key:',
+        apiKey ? `${apiKey.substring(0, 10)}...` : 'EMPTY'
+      );
       await Purchases.configure({ apiKey });
+      console.log('[RC] Initialized successfully');
       await setDeviceAttributes();
     } catch (error) {
+      console.log('[RC] Init error:', error);
       logger.error('Failed to initialize RevenueCat', error);
     }
   })();
@@ -118,24 +124,40 @@ export function checkProStatus(): Promise<boolean> {
 }
 
 export async function getOfferings(languageCode?: string): Promise<PurchasesPackage[] | null> {
-  if (!(await waitForInit())) return null;
+  if (!(await waitForInit())) {
+    console.log('[RC] waitForInit returned false');
+    return null;
+  }
   try {
+    console.log('[RC] Fetching offerings...');
     const offerings = await Purchases.getOfferings();
+    console.log(
+      '[RC] Offerings:',
+      JSON.stringify({
+        current: offerings.current?.identifier,
+        all: Object.keys(offerings.all),
+        packages: offerings.current?.availablePackages.map(p => p.identifier),
+      })
+    );
 
     // Try language-specific offering first (e.g. "pl_default", "de_default")
     if (languageCode) {
       const langOffering = offerings.all[`${languageCode}_default`];
       if (langOffering && langOffering.availablePackages.length > 0) {
+        console.log('[RC] Using language offering:', `${languageCode}_default`);
         return langOffering.availablePackages;
       }
     }
 
     // Fallback to default offering
     if (offerings.current && offerings.current.availablePackages.length > 0) {
+      console.log('[RC] Using default offering');
       return offerings.current.availablePackages;
     }
+    console.log('[RC] No offerings available');
     return null;
   } catch (error) {
+    console.log('[RC] Error fetching offerings:', error);
     logger.error('Failed to get offerings', error);
     return null;
   }

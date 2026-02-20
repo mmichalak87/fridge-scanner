@@ -9,7 +9,6 @@ import SettingsScreen from '../screens/SettingsScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import PaywallScreen from '../screens/PaywallScreen';
 
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator() {
@@ -30,11 +29,6 @@ export default function RootNavigator() {
       }}
     >
       <Stack.Screen
-        name="Onboarding"
-        component={OnboardingScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -42,6 +36,11 @@ export default function RootNavigator() {
           title: '',
           headerBackTitle: ' ',
         }}
+      />
+      <Stack.Screen
+        name="Onboarding"
+        component={OnboardingScreen}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Camera"
@@ -52,21 +51,9 @@ export default function RootNavigator() {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Results"
-        component={ResultsScreen}
-        options={{ title: 'Results' }}
-      />
-      <Stack.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{ title: 'Settings' }}
-      />
-      <Stack.Screen
-        name="Favorites"
-        component={FavoritesScreen}
-        options={{ title: 'Favorites' }}
-      />
+      <Stack.Screen name="Results" component={ResultsScreen} options={{ title: 'Results' }} />
+      <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: 'Settings' }} />
+      <Stack.Screen name="Favorites" component={FavoritesScreen} options={{ title: 'Favorites' }} />
       <Stack.Screen
         name="Paywall"
         component={PaywallScreen}
@@ -75,11 +62,7 @@ export default function RootNavigator() {
           presentation: 'modal',
         }}
       />
-      <Stack.Screen
-        name="Gallery"
-        component={GalleryScreen}
-        options={{ title: 'Gallery' }}
-      />
+      <Stack.Screen name="Gallery" component={GalleryScreen} options={{ title: 'Gallery' }} />
     </Stack.Navigator>
   );
 }

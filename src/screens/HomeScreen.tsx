@@ -53,6 +53,7 @@ export default function HomeScreen() {
   const checkOnboarding = async () => {
     try {
       const onboardingComplete = await AsyncStorage.getItem('onboarding_complete');
+      console.log('[Onboarding] onboarding_complete:', onboardingComplete);
       if (!onboardingComplete) {
         navigation.replace('Onboarding');
       } else {
