@@ -11,7 +11,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { LANGUAGES, saveLanguage } from '../locales/i18n';
 import { useSubscription } from '../hooks/useSubscription';
 import { getAppUserId } from '../services/subscription';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -38,10 +37,6 @@ export default function SettingsScreen() {
       getAppUserId().then(setAppUserId);
     }
   }, [isPro]);
-
-  const changeLanguage = async (langCode: string) => {
-    await saveLanguage(langCode);
-  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -108,35 +103,6 @@ export default function SettingsScreen() {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t('settings.language')}</Text>
-        <View style={styles.languageList}>
-          {LANGUAGES.map(lang => (
-            <TouchableOpacity
-              key={lang.code}
-              style={[
-                styles.languageItem,
-                i18n.language === lang.code && styles.languageItemActive,
-              ]}
-              onPress={() => changeLanguage(lang.code)}
-            >
-              <View style={styles.languageInfo}>
-                <Text
-                  style={[
-                    styles.languageName,
-                    i18n.language === lang.code && styles.languageNameActive,
-                  ]}
-                >
-                  {lang.nativeName}
-                </Text>
-                <Text style={styles.languageNameEn}>{lang.name}</Text>
-              </View>
-              {i18n.language === lang.code && <Text style={styles.checkmark}>+</Text>}
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('settings.about')}</Text>
         <View style={styles.aboutCard}>
           <Text style={styles.appName}>{t('settings.appName')}</Text>
@@ -162,22 +128,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     marginLeft: 4,
   },
-  languageList: { backgroundColor: '#fff', borderRadius: 16, overflow: 'hidden' },
-  languageItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  languageItemActive: { backgroundColor: '#E8F5E9' },
-  languageInfo: { flex: 1 },
-  languageName: { fontSize: 16, fontWeight: '500', color: '#1a1a1a' },
-  languageNameActive: { color: '#2E7D32', fontWeight: '600' },
-  languageNameEn: { fontSize: 14, color: '#888', marginTop: 2 },
-  checkmark: { fontSize: 20, color: '#4CAF50', fontWeight: '600' },
   subscriptionCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20 },
   subscriptionHeader: {
     flexDirection: 'row',
